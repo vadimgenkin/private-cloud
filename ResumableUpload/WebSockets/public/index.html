@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+		<title>File Uploader</title>
+		
+		<script src="/socket.io/socket.io.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
+		<script src="script.js"></script>
+
+	</head>
+	<body> 
+
+		<div id="uploadbox">
+
+			<h2>File Uploader</h2>
+			<span id='upload-area'>
+				<label for="filebox">Choose A File: </label><input type="file" id="filebox"><br>
+				<div id="dropbox"><span id="dropbox-label">Drop files here...</span></div>
+				<label for="namebox">Name: </label><input type="text" id="namebox"><br>
+				<button	type='button' id='upload-button' class='btn'>Upload</button>
+			</span>
+		</div>
+	</body>
+</html>
