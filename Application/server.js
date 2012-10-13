@@ -5,7 +5,7 @@ var fileserver = require('./fileserver');
 var app = express();
 
 app.configure(function(){
-	app.use(express.static(__dirname));
+	app.use(express.static(__dirname + "/public"));
 	app.use(express.bodyParser());
 });
 
