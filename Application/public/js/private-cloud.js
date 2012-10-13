@@ -217,4 +217,4 @@
         return fileList;
     };
 
-})(window.homeless = window.homeless || {});
+})(window. privateCloud= window.privateCloud || {});
