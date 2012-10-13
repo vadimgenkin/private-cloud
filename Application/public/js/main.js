@@ -12,8 +12,6 @@ $(function() {
 });
 
 // Fill listview data
-
-
 function createListView(files) {
     $("#files").html($("#fileTemplate").render(files));
 }

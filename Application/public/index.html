@@ -14,6 +14,10 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="fonts/general_foundicons.css"/>
+        <link rel="stylesheet" type="text/css" href="fonts/general_enclosed_foundicons.css"/>
+        <link rel="stylesheet" type="text/css" href="fonts/accessibility_foundicons.css"/>
+        <link rel="stylesheet" type="text/css" href="fonts/tillium_stylesheet.css"/>
         <script src="js/vendor/modernizr-2.6.1.min.js"></script>
     </head>
     <body>
@@ -32,12 +36,23 @@
         </div>
 
         <!-- Templates -->
+        <!-- TODO: improve template by variable declaration and DRYing -->
         <script type="text/x-jsrender-tmpl" id="fileTemplate">
             <li>
                 {{if type == "inode/directory"}}
-                    <a href="/api/ls/{{:name}}"><h3 class="foundicon-folder">{{:name}}</h3></a>
+                    <i class="general foundicon-folder"></i><span>{{:name}}</span>
+                {{else type == "inode/symlink"}}
+                    <i class="general foundicon-right-arrow"></i><span>{{:name}}</span>
+                {{else type.indexOf("video/") != -1}}
+                    <i class="general foundicon-video"></i><span>{{:name}}</span>
+                {{else type.indexOf("audio/") != -1}}
+                    <i class="accessibility foundicon-speaker"></i><span>{{:name}}</span>
+                {{else type.indexOf("image/") != -1}}
+                   <i class="general foundicon-smiley"></i><span>{{:name}}</span>
+               {{else type.indexOf("text/") != -1}}
+                    <i class="general foundicon-edit"></i><span>{{:name}}</span>
                 {{else}}
-                    <a href="/api/get/{{:name}}"><h3>{{:name}}</h3></a>
+                    <i class="general foundicon-page"></i><span>{{:name}}</span>
                 {{/if}}
             </li>
         </script>

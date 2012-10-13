@@ -207,7 +207,7 @@
         type: "inode/directory"
     }, {
         name: "Zvuki Mu - Crimea (1988) (1994 Moroz dMR 31800 CD) (NL+0802]by_mitay.iso.wv",
-        type: "application/x-iso9660-image"
+        type: "audio/flac"
     }];
 
 
