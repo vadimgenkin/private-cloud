@@ -11,7 +11,7 @@ var httpFileDownloader3 = new httpFileDownloader.HttpFileDownloader({
 	httpLink : linkToDownload3,
 	callback :  function(err, details){
 		if(details.status == 'progress'){
-			console.log((details.completed/1024/1024).toFixed(2) + ' mb');
+			console.log((details.completed/1024/1024).toFixed(2) + ' MiB');
 		}
 		else if(details.status == 'done'){
 			console.log("Finished downloading " + details.filename);
