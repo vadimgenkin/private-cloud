@@ -1,18 +1,29 @@
 $(function() {
+    var currentPath = ".";
 
-    var files = privateCloud.ls('home');
-    var originalContent = "";
-
-    // directories displayed first
-    files.sort(function(file1, file2) {
-        return (file1.type != "inode/directory" && file2.type == "inode/directory") -
-        (file1.type == "inode/directory" && file2.type != "inode/directory");
+    privateCloud.ls(currentPath, function(files) {
+        // directories first
+        files.sort(function(file1, file2) {
+            return(file1.type != "dir" && file2.type == "dir") - (file1.type == "dir" && file2.type != "dir");
+        });
+        createListView(files);
     });
 
-    createListView(files);
+    // navigation -- for tests only
+    $("a#nav-up").click(function(){
+        currentPath = "../" + currentPath;
+        privateCloud.ls(currentPath, function(files) {
+        // directories first
+        files.sort(function(file1, file2) {
+            return(file1.type != "dir" && file2.type == "dir") - (file1.type == "dir" && file2.type != "dir");
+        });
+        createListView(files);
+    });
+    });
+
+
 });
 
-// Fill listview data
 function createListView(files) {
     $("#files").html($("#fileListItemTemplate").render(files));
 }

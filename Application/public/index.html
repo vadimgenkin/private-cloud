@@ -8,16 +8,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Private Cloud</title>
     <meta name="description" content="Private Cloud">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/normalize.css"/>
+    <link rel="stylesheet" href="css/slate-bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" href="fonts/font-awesome.css"/>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="fonts/general_foundicons.css"/>
-    <link rel="stylesheet" type="text/css" href="fonts/general_enclosed_foundicons.css"/>
-    <link rel="stylesheet" type="text/css" href="fonts/accessibility_foundicons.css"/>
-    <link rel="stylesheet" type="text/css" href="fonts/tillium_stylesheet.css"/>
+
     <script src="js/vendor/modernizr-2.6.1.min.js"></script>
 </head>
 <body>
@@ -30,53 +30,92 @@
             to better experience this site.
         </p>
         <![endif]-->
+        <nav class="row-fluid" id="nav-menu">
+            <div class="span8 offset2">
+                <div class="navbar">
+                    <ul class="nav">
+                        <li><a href="#" class="icon-home hover-option" title="Home" id="nav-home"></a></li>
+                        <li><a href="#" class="icon-refresh hover-option" title="Refresh" id="nav-refresh"></a></li>
+                        <li><a href="#" class="icon-arrow-up hover-option" title="Go one level up" id="nav-up"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-        <div id="content">
-            <ul id="files"></ul>
+        <div id="content" class="row-fluid">
+            <ul id="files" class="span8 offset2"></ul>
         </div>
 
         <!-- Templates -->
         <!-- TODO: improve template by variable declaration and DRYing -->
         <script type="text/x-jsrender-tmpl" id="fileListItemTemplate">
-        <li>
-        {{if type == "inode/directory"}}
-        <i class="general foundicon-folder vertical-fix"></i><span>{{:name}}</span>
-        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-right-arrow hover-option ' title='Browse'/>
+        <li class="row-fluid">
+        {{if type == "dir"}}
+        <div class="span8">
+        <i class="icon-folder-close"></i><span>{{:name.split('/').pop()}}</span>
+        </div>
+        <div  class="span4">
+        <a  href='javascript: void(0);' class='icon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='icon-folder-open hover-option ' title='Browse'/>
+        </div>
         {{else type == "inode/symlink"}}
-        <i class="general foundicon-right-arrow vertical-fix"></i><span>{{:name}}</span>
-        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        <div class="span8">
+        <i class="icon-external-link"></i><span>{{:name.split('/').pop()}}</span>
+        </div>
+        <div class="span4">
+        <a  href='javascript: void(0);' class='icon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='icon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='icon-download hover-option ' title='Download'/>
+        </div>
         {{else type.indexOf("video/") != -1}}
-        <i class="general foundicon-video vertical-fix"></i><span>{{:name}}</span>
-        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-video hover-option ' title='Stream'/>
+        <div class="span8">
+        <i class="icon-film"></i><span>{{:name.split('/').pop()}}</span>
+        </div>
+        <div class="span4">
+        <a  href='javascript: void(0);' class='icon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='icon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='icon-download hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='icon-play hover-option ' title='Stream'/>
+        </div>
         {{else type.indexOf("audio/") != -1}}
-        <i class="accessibility foundicon-speaker vertical-fix"></i><span>{{:name}}</span>
-        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-video hover-option ' title='Stream'/>
+        <div class="span8">
+        <i class="icon-volume-up"></i><span>{{:name.split('/').pop()}}</span>
+        </div>
+        <div class="span4">
+        <a  href='javascript: void(0);' class='icon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='icon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='icon-download hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='icon-music hover-option ' title='Stream'/>
+        </div>
         {{else type.indexOf("image/") != -1}}
-        <i class="general foundicon-smiley vertical-fix"></i><span>{{:name}}</span>
-        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-video hover-option ' title='View'/>
+        <div class="span8">
+        <i class="icon-picture"></i><span>{{:name.split('/').pop()}}</span>
+        </div>
+        <div class="span4">
+        <a  href='javascript: void(0);' class='icon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='icon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='icon-download hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='icon-eye-open hover-option ' title='View'/>
+        </div>
         {{else type.indexOf("text/") != -1}}
-        <i class="general foundicon-edit vertical-fix"></i><span>{{:name}}</span>
-        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-edit hover-option ' title='Edit'/>
+        <div class="span8">
+        <i class="icon-edit"></i><span>{{:name.split('/').pop()}}</span>
+        </div>
+        <div class="span4">
+        <a  href='javascript: void(0);' class='icon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='icon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='icon-download hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='icon-edit hover-option ' title='Edit'/>
+        </div>
         {{else}}
-        <i class="general foundicon-page vertical-fix"></i><span>{{:name}}</span>
-        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
-        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        <div class="span8">
+        <i class="icon-file"></i><span>{{:name.split('/').pop()}}</span>
+        </div>
+        <div class="span4">
+        <a  href='javascript: void(0);' class='icon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='icon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='icon-download hover-option ' title='Download'/>
+        </div>
         {{/if}}
         </li>
         </script>
