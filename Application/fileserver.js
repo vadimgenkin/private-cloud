@@ -82,6 +82,9 @@ exports.ls = function(req,res){
 		});
 	}
 	else{
+		if(!fs.existsSync(p)){
+			return res.send("Path not found");
+		}
 		fs.readdir(p, function(err,files){
 			addPathToFilenames(p, files, function(filePaths){
 				getArrayOfNodes(filePaths, function(nodes){
