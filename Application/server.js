@@ -1,12 +1,15 @@
 var express = require("express");
 var util = require("util");
 var fileserver = require('./fileserver');
+var fs = require('fs');
 
 var app = express();
+var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
 
 app.configure(function(){
 	app.use(express.static(__dirname + "/public"));
 	app.use(express.bodyParser());
+	app.use(express.logger({stream: logFile}));
 });
 
 //get memory (RAM)
