@@ -21,7 +21,7 @@
   body {
     font-size: 1em;
     line-height: 1.4;
-     background-color: rgba(83, 83, 83, 0.3);
+    background-color: rgba(83, 83, 83, 0.3);
     color: rgba(65, 55, 55, 1);
   }
 
@@ -300,15 +300,19 @@
   }
 
   div#content {
-
+    overflow-x: auto;
+   /* position: absolute;
+    top:10%;
+    bottom: 10%;*/
   }
 
   ul#files {
     font-size: 1.5em;
     font-family: 'TitilliumText22LRegular';
     text-shadow: 1px -1px 1px #999;
-    margin-left: 10%;
-    margin-right: 10%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   ul#files li {
@@ -318,10 +322,18 @@
     border-bottom: 1px solid rgba(128,128,128,0.3);
     text-overflow: ellipsis;
     overflow: hidden;
+     -webkit-transition: background-color .5s;
+    -moz-transition: background-color .5s;
+    -o-transition: background-color .5s;
+    transition: background-color .5s;
   }
 
   ul#files li:hover {
-    background-color: rgba(128, 128, 128, 0.1);
+    background-color: rgba(143, 128, 128, 0.1);
+  }
+
+  ul#files li:hover a.hover-option{
+    visibility: visible;
   }
 
   ul#files li i {
@@ -331,5 +343,24 @@
   }
 
   ul#files li span {
-    text-overflow: ellipsis;
+    white-space:nowrap;
   }
+
+  a.hover-option {
+    color: inherit;
+    float: right;
+    text-decoration: none;
+    margin-left: .7em;
+    visibility: hidden;
+    padding-top: .25em;
+    -webkit-transition: color .5s;
+    -moz-transition: color .5s;
+    -o-transition: color .5s;
+    transition: color .5s;
+  }
+
+  a.hover-option:hover {
+    color: #7c333f;
+  }
+
+

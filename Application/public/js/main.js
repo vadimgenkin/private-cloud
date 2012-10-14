@@ -1,6 +1,7 @@
 $(function() {
 
     var files = privateCloud.ls('home');
+    var originalContent = "";
 
     // directories displayed first
     files.sort(function(file1, file2) {
@@ -13,5 +14,5 @@ $(function() {
 
 // Fill listview data
 function createListView(files) {
-    $("#files").html($("#fileTemplate").render(files));
+    $("#files").html($("#fileListItemTemplate").render(files));
 }

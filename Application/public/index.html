@@ -3,24 +3,24 @@
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
 <!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
 <!--[if gt IE 8]><!--><html class="no-js"><!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Private Cloud</title>
-        <meta name="description" content="Private Cloud">
-        <meta name="viewport" content="width=device-width">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Private Cloud</title>
+    <meta name="description" content="Private Cloud">
+    <meta name="viewport" content="width=device-width">
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" type="text/css" href="fonts/general_foundicons.css"/>
-        <link rel="stylesheet" type="text/css" href="fonts/general_enclosed_foundicons.css"/>
-        <link rel="stylesheet" type="text/css" href="fonts/accessibility_foundicons.css"/>
-        <link rel="stylesheet" type="text/css" href="fonts/tillium_stylesheet.css"/>
-        <script src="js/vendor/modernizr-2.6.1.min.js"></script>
-    </head>
-    <body>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="fonts/general_foundicons.css"/>
+    <link rel="stylesheet" type="text/css" href="fonts/general_enclosed_foundicons.css"/>
+    <link rel="stylesheet" type="text/css" href="fonts/accessibility_foundicons.css"/>
+    <link rel="stylesheet" type="text/css" href="fonts/tillium_stylesheet.css"/>
+    <script src="js/vendor/modernizr-2.6.1.min.js"></script>
+</head>
+<body>
         <!--[if lt IE 7]>
         <p class="chromeframe">
             You are using an outdated browser.
@@ -37,24 +37,48 @@
 
         <!-- Templates -->
         <!-- TODO: improve template by variable declaration and DRYing -->
-        <script type="text/x-jsrender-tmpl" id="fileTemplate">
-            <li>
-                {{if type == "inode/directory"}}
-                    <i class="general foundicon-folder"></i><span>{{:name}}</span>
-                {{else type == "inode/symlink"}}
-                    <i class="general foundicon-right-arrow"></i><span>{{:name}}</span>
-                {{else type.indexOf("video/") != -1}}
-                    <i class="general foundicon-video"></i><span>{{:name}}</span>
-                {{else type.indexOf("audio/") != -1}}
-                    <i class="accessibility foundicon-speaker"></i><span>{{:name}}</span>
-                {{else type.indexOf("image/") != -1}}
-                   <i class="general foundicon-smiley"></i><span>{{:name}}</span>
-               {{else type.indexOf("text/") != -1}}
-                    <i class="general foundicon-edit"></i><span>{{:name}}</span>
-                {{else}}
-                    <i class="general foundicon-page"></i><span>{{:name}}</span>
-                {{/if}}
-            </li>
+        <script type="text/x-jsrender-tmpl" id="fileListItemTemplate">
+        <li>
+        {{if type == "inode/directory"}}
+        <i class="general foundicon-folder vertical-fix"></i><span>{{:name}}</span>
+        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-right-arrow hover-option ' title='Browse'/>
+        {{else type == "inode/symlink"}}
+        <i class="general foundicon-right-arrow vertical-fix"></i><span>{{:name}}</span>
+        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        {{else type.indexOf("video/") != -1}}
+        <i class="general foundicon-video vertical-fix"></i><span>{{:name}}</span>
+        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-video hover-option ' title='Stream'/>
+        {{else type.indexOf("audio/") != -1}}
+        <i class="accessibility foundicon-speaker vertical-fix"></i><span>{{:name}}</span>
+        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-video hover-option ' title='Stream'/>
+        {{else type.indexOf("image/") != -1}}
+        <i class="general foundicon-smiley vertical-fix"></i><span>{{:name}}</span>
+        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-video hover-option ' title='View'/>
+        {{else type.indexOf("text/") != -1}}
+        <i class="general foundicon-edit vertical-fix"></i><span>{{:name}}</span>
+        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-edit hover-option ' title='Edit'/>
+        {{else}}
+        <i class="general foundicon-page vertical-fix"></i><span>{{:name}}</span>
+        <a  href='javascript: void(0);' class='enclosed foundicon-trash hover-option ' title='Delete'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-cloud hover-option ' title='Share'/>
+        <a  href='javascript: void(0);' class='enclosed foundicon-down-arrow hover-option ' title='Download'/>
+        {{/if}}
+        </li>
         </script>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
@@ -68,4 +92,4 @@
         <script src="js/main.js"></script>
 
     </body>
-</html>
+    </html>
