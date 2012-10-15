@@ -12,6 +12,10 @@ app.configure(function(){
 	app.use(express.logger({stream: logFile}));
 });
 
+process.chdir('/');
+
+app.post('/chdir', fileserver.chdir);
+
 //get memory (RAM)
 app.get('/memory', fileserver.memory);
 
@@ -43,5 +47,5 @@ app.post('/mkdir', fileserver.createDir);
 //add http link to download
 app.post('/httpDownload', fileserver.httpDownload);
 
-app.listen(3000);
-console.log('Listening on port 3000');
+app.listen(3001);
+console.log('Listening on port 3001');

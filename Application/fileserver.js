@@ -5,6 +5,7 @@ var util = require('util');
 var resumable = require('./resumable-upload.js')(__dirname + '/tmp/');
 var diskspace = require('diskspace');
 var os = require('os');
+var path = require('path');
 
 var httpFileDownloader = require('./http-file-downloader');
 
@@ -21,41 +22,68 @@ var readSharedPathsFromArgs = function(){
 
 var getNodeType = function(nodePath, callback){
 	fs.stat(nodePath, function(err, stats){
-		if(err) return callback(err);
-		var nodeType;
-		if(stats.isFile()){
-			nodeType = mime.lookup(nodePath);
+		if(err) callback(err);
+		else{
+			var nodeType;
+			if(stats.isFile()){
+				nodeType = mime.lookup(nodePath);
+			}
+			else if(stats.isDirectory()){
+				nodeType = 'dir';
+			}
+			return callback(null, nodeType);
 		}
-		else if(stats.isDirectory()){
-			nodeType = 'dir';
-		}
-		console.log(nodeType);
-		return callback(err, nodeType);
 	});
 }
 
 var getArrayOfNodes = function(nodePaths, callback){
 	var fileCounter = 0;
+	
 	var nodes = [];
+	var nodeDirs = [];
+	var nodeFiles = [];
+
 	nodePaths.forEach(function(nodePath){
 		getNodeType(nodePath, function(err,nodeType){
-			if(err) return callback(err);
-
-			var node = { type : nodeType, name : nodePath };
-			nodes.push(node);
-
+			if(err) console.log(err);
+			else{
+				var node = { type : nodeType, name : path.basename(nodePath) };
+				if(nodeType == 'dir')
+					nodeDirs.push(node);
+				else 
+					nodeFiles.push(node);
+			}
 			fileCounter++;
 			if(fileCounter == nodePaths.length){
-				return callback(nodes);
+				
+				//sort dirs and files alphabetically
+				sortNodesAlphabetically(nodeDirs);
+				sortNodesAlphabetically(nodeFiles);
+
+				//concatenate sorted dirs and files (dirs first)
+				nodes = nodeDirs.concat(nodeFiles);
+
+				return callback(null,nodes);				
 			}
 		});
 	});
 }
 
-var addPathToFilenames = function(path, filenames, callback){
+var sortNodesAlphabetically = function(nodes){
+	nodes.sort(function(nodeA, nodeB){
+		 var nameA = nodeA.name.toLowerCase(), nameB = nodeB.name.toLowerCase()
+		 if (nameA < nameB) //sort string ascending
+		  return -1;
+		 if (nameA > nameB)
+		  return 1;
+		 return 0; //default return value (no sorting)
+	})
+}
+
+var addPathToFilenames = function(_path, filenames, callback){
 	var filePaths = [];
 	filenames.forEach(function(filename){
-		filePaths.push(path + '/' + filename);
+		filePaths.push(path.join(_path, filename));
 	});
 	return callback(filePaths);
 }
@@ -87,7 +115,8 @@ exports.ls = function(req,res){
 		}
 		fs.readdir(p, function(err,files){
 			addPathToFilenames(p, files, function(filePaths){
-				getArrayOfNodes(filePaths, function(nodes){
+				getArrayOfNodes(filePaths, function(err,nodes){
+					if(err) console.log(err);
 					res.send(nodes);
 				});
 			});
@@ -130,6 +159,14 @@ exports.uploadresumable = function(req,res){
     });	
 }
 
+exports.chdir = function(req, res){
+	var p = req.body.path;
+	if(fs.existsSync(p)){
+		process.chdir(p);
+	}
+	res.send('');
+}
+
 exports.memory = function(req,res){
 	res.json({ total : os.totalmem(), free : os.freemem() });
 }
@@ -141,7 +178,6 @@ exports.diskspace = function(req,res){
 	if(drive){
 		diskspace.check(drive, function (total, free, status)
 		{
-			console.log(status);
 		    res.json({ total : total, free : free });
 		});
 	}
