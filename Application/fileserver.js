@@ -67,6 +67,7 @@ var getArrayOfNodes = function(nodePaths, callback){
 			}
 		});
 	});
+	//return callback(null, '');
 }
 
 var sortNodesAlphabetically = function(nodes){
@@ -106,21 +107,25 @@ exports.ls = function(req,res){
 	var p = req.body.path;
 	if(!p){
 		getArrayOfNodes(sharedPaths, function(nodes){
-			res.send(nodes);
+			return res.send(nodes);
 		});
 	}
 	else{
 		if(!fs.existsSync(p)){
 			return res.send("Path not found");
 		}
-		fs.readdir(p, function(err,files){
-			addPathToFilenames(p, files, function(filePaths){
-				getArrayOfNodes(filePaths, function(err,nodes){
-					if(err) console.log(err);
-					res.send(nodes);
+		else{
+			fs.readdir(p, function(err,files){
+				//empty dir
+				if(files.length < 1) return res.send('');
+				addPathToFilenames(p, files, function(filePaths){
+					getArrayOfNodes(filePaths, function(err,nodes){
+						if(err) console.log(err);
+						return res.send(nodes);
+					});
 				});
 			});
-		});
+		}
 	}
 }
 
