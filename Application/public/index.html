@@ -39,30 +39,35 @@
                     to better experience this site.
                 </p>
                 <![endif]-->
-                <nav class="row-fluid" id="nav-menu">
-                    <div class="span8 offset2">
-                        <div class="navbar">
-                            <ul class="nav">
-                                <li>
-                                    <a href="#" class="hover-option" title="Home" id="nav-home"> <i class="icon-home"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="hover-option" title="Refresh" id="nav-refresh"> <i class="icon-refresh"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="hover-option" title="Go one level up" id="nav-up">
-                                        <i class="icon-arrow-up"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                <nav id="nav-menu">
+                                <div class="navbar navbar-fixed-top">
+                                    <div class="navbar-inner">
+                                        <a class="brand" href="http://www.private-cloud.com">&nbsp;<i class="icon-cloud"></i> Private Cloud</a>
+                                        <ul class="nav" id="navigation">
+                                            <li><a href="#" id="nav-home"><i class="icon-home"></i></a></li>
+                                            <li><a href="#" id="nav-refresh"> <i class="icon-refresh"></i></a></li>
+                                            <li><a href="#" id="nav-up"><i class="icon-arrow-up"></i></a></li>
+                                            </ul>
+                                            <ul class="nav" id="filesystem">
+                                            <li><a href="#newFolderDialog" id="nav-new-folder" data-toggle="modal">+<i class="icon-folder-close"></i></a></li>
+                                            <li><a href="#" id="nav-upload">+<i class="icon-file"></i></a></li>
+                                            </ul>
+                                            <ul class="nav pull-right" id="misc">
+                                            <li class="divider-vertical"></li>
+                                            <li><a href="#helpDialog" id="nav-help" data-toggle="modal"> <i class="icon-question-sign"></i></a></li>
+                                            <li><a href="mailto:alxgreen@gmail.com" id="nav-contact"> <i class="icon-envelope-alt"></i></a></li>
+                                            <li><a href="#settingsDialog" id="nav-settings" data-toggle="modal"><i class="icon-cog"></i></a></li>
+                                            </ul>
+                                    </div>
+                                </div>
+                        </nav>
+
+                <div class="row-fluid">
+                    <div class="span12w">
+                        <div id="content">
+                            <ul id="files"></ul>
                         </div>
                     </div>
-                </nav>
-
-                <div id="content" class="row-fluid">
-                    <ul id="files" class="span8 offset2"></ul>
                 </div>
 
                 <!-- Templates -->
@@ -152,12 +157,66 @@
                 </li>
                 </script>
 
+                <!-- Dialogs-->
+
+
+                <div class="modal fade in" id="helpDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="myModalLabel"><p><i class="icon-question-sign"></i> Help</p></h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    </div>
+                </div>
+
+                <div class="modal fade in" id="settingsDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="myModalLabel"><p><i class="icon-cog"></i> Settings</p></h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    </div>
+                </div>
+
+                <div class="modal fade in" id="newFolderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="myModalLabel"><p><i class="icon-folder-close"></i> Create New Folder</p></h3>
+                    </div>
+                    <div class="modal-body">
+                       <input type="text" placeholder="Enter folder name" id="newFolderName"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                        <button class="btn btn-info" id="btnCreateNewFolder">Done</button>
+                    </div>
+                </div>
+                <!-- /Dialogs-->
+
                 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
                 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
 
                 <!--TODO: check for jsRender SDN -->
                 <script src="js/vendor/jsrender.js"></script>
-
+                <script src="js/vendor/bootstrap.min.js"></script>
                 <script src="js/plugins.js"></script>
                 <script src="js/private-cloud.js"></script>
                 <script src="js/main.js"></script>

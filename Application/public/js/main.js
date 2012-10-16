@@ -1,30 +1,71 @@
 var home = "/home/lxgreen"; //TODO: home location -- to config file
 $(function() {
+
     // init home ls
     privateCloud.cd(home, function() {
         privateCloud.ls(".", listFiles);
     });
 
-    // bind navigation links
-    $("a#nav-up").click(function() {
+    // bind menu links
+    $("a#nav-up").tooltip({
+        placement: 'bottom',
+        title: 'Level Up'
+    }).click(function() {
         privateCloud.cd("..", function() {
             privateCloud.ls(".", listFiles);
         });
     });
 
-    $("a#nav-refresh").click(function() {
+    $("a#nav-refresh").tooltip({
+        placement: 'bottom',
+        title: 'Refresh'
+    }).click(function() {
         privateCloud.ls(".", listFiles);
     });
 
-    $("a#nav-home").click(function() {
+    $("a#nav-home").tooltip({
+        placement: 'bottom',
+        title: 'Home'
+    }).click(function() {
         privateCloud.cd(home, function() {
             privateCloud.ls(".", listFiles);
         });
     });
+
+    $("a#nav-upload").tooltip({
+        placement: 'bottom',
+        title: 'Upload File'
+    });
+    $("a#nav-new-folder").tooltip({
+        placement: 'bottom',
+        title: 'New Folder'
+    });
+    $("a#nav-settings").tooltip({
+        placement: 'bottom',
+        title: 'Settings'
+    });
+    $("a#nav-contact").tooltip({
+        placement: 'bottom',
+        title: 'Contact Us'
+    });
+    $("a#nav-help").tooltip({
+        placement: 'bottom',
+        title: 'Help'
+    });
+
+    $("button#btnCreateNewFolder").click(function() {
+        var folderName = $("input#newFolderName").val();
+        if(isValid(folderName)) {
+            privateCloud.mkdir(folderName, function(){
+                $("div#newFolderDialog").modal("hide");
+                privateCloud.ls(".", listFiles);
+            });
+        }
+    });
+
 });
 
 // build file list view
-
 
 function listFiles(files) {
     if(files.length > 0) {
@@ -36,15 +77,22 @@ function listFiles(files) {
                 privateCloud.ls(".", listFiles);
             });
         });
-    }
-    else {
-        $("ul#files").hide().html($("#emptyDirTemplate").render(files)).fadeIn();
+    } else {
+        $("ul#files").hide().html($("#emptyDirTemplate").render()).fadeIn();
 
         // go back on click
-        $("ul#files li[data-type='dir']").click(function() {
+        $("ul#files li").click(function() {
             privateCloud.cd("..", function() {
                 privateCloud.ls(".", listFiles);
             });
         });
     }
+}
+
+// validates file/dir name
+function isValid(fname) {
+    var rg1 = /^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
+    var rg2 = /^\./; // cannot start with dot (.) in windows
+    var rg3 = /^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names in windows
+    return fname && rg1.test(fname) /*&& !rg2.test(fname) && !rg3.test(fname)*/;
 }
