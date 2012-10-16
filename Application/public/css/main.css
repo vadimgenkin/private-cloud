@@ -299,15 +299,13 @@
     }
   }
 
-
-
   ul#files li {
     list-style: none;
     display: block;
     padding: .4em;
     border-bottom: 1px solid #3A3F44;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    /*text-overflow: ellipsis;*/
+    /*overflow: hidden;*/
   }
 
   ul#files li:hover {
@@ -315,10 +313,15 @@
     background-image: -webkit-linear-gradient(280deg, #272B30, #3A3F44);
     background-image: -o-linear-gradient(280deg, #272B30, #3A3F44);
     background-image: linear-gradient(280deg, #272B30, #3A3F44);
+    cursor: pointer;
   }
 
   ul#files li:hover a.hover-option{
     visibility: visible;
+  }
+
+  ul#files li:hover a.icon-folder-open.hover-option, ul#files li:hover a.icon-download.hover-option{
+    color: #BBBFC2;
   }
 
   ul#files li a.hover-option{
@@ -367,6 +370,10 @@ ul#files li a.hover-option:hover {
 
 ul#files li a.icon-trash.hover-option:hover {
   color: #BD362F;
+}
+
+ul#files li a.icon-cloud.hover-option:hover {
+  color: #02A1DD;
 }
 
 nav#nav-menu {

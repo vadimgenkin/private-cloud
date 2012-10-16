@@ -34,4 +34,13 @@
             callback(result);
         });
     };
+
+    // Change directory
+    ns.cd = function(path, callback) {
+        $.post("/chdir", {
+            path: path
+        }, function(result) {
+             callback(result);
+        });
+    };
 })(window.privateCloud = window.privateCloud || {}, jQuery);

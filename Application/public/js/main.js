@@ -1,29 +1,50 @@
+var home = "/home/lxgreen"; //TODO: home location -- to config file
 $(function() {
-    var currentPath = ".";
+    // init home ls
+    privateCloud.cd(home, function() {
+        privateCloud.ls(".", listFiles);
+    });
 
-    privateCloud.ls(currentPath, function(files) {
-        // directories first
-        files.sort(function(file1, file2) {
-            return(file1.type != "dir" && file2.type == "dir") - (file1.type == "dir" && file2.type != "dir");
+    // bind navigation links
+    $("a#nav-up").click(function() {
+        privateCloud.cd("..", function() {
+            privateCloud.ls(".", listFiles);
         });
-        createListView(files);
     });
 
-    // navigation -- for tests only
-    $("a#nav-up").click(function(){
-        currentPath = "../" + currentPath;
-        privateCloud.ls(currentPath, function(files) {
-        // directories first
-        files.sort(function(file1, file2) {
-            return(file1.type != "dir" && file2.type == "dir") - (file1.type == "dir" && file2.type != "dir");
+    $("a#nav-refresh").click(function() {
+        privateCloud.ls(".", listFiles);
+    });
+
+    $("a#nav-home").click(function() {
+        privateCloud.cd(home, function() {
+            privateCloud.ls(".", listFiles);
         });
-        createListView(files);
     });
-    });
-
-
 });
 
-function createListView(files) {
-    $("#files").html($("#fileListItemTemplate").render(files));
+// build file list view
+
+
+function listFiles(files) {
+    if(files.length > 0) {
+        $("ul#files").hide().html($("#fileListItemTemplate").render(files)).fadeIn();
+
+        // bind dir list item click
+        $("ul#files li[data-type='dir']").click(function() {
+            privateCloud.cd($(this).data("name"), function() {
+                privateCloud.ls(".", listFiles);
+            });
+        });
+    }
+    else {
+        $("ul#files").hide().html($("#emptyDirTemplate").render(files)).fadeIn();
+
+        // go back on click
+        $("ul#files li[data-type='dir']").click(function() {
+            privateCloud.cd("..", function() {
+                privateCloud.ls(".", listFiles);
+            });
+        });
+    }
 }
