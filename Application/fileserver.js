@@ -117,7 +117,7 @@ exports.ls = function(req,res){
 		else{
 			fs.readdir(p, function(err,files){
 				//empty dir
-				if(files.length < 1) return res.send('');
+				if(files.length < 1) return res.send([]);
 				addPathToFilenames(p, files, function(filePaths){
 					getArrayOfNodes(filePaths, function(err,nodes){
 						if(err) console.log(err);
