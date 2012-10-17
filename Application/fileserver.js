@@ -6,6 +6,7 @@ var resumable = require('./resumable-upload.js')(__dirname + '/tmp/');
 var diskspace = require('diskspace');
 var os = require('os');
 var path = require('path');
+var wrench = require('wrench');
 
 var httpFileDownloader = require('./http-file-downloader');
 
@@ -22,7 +23,10 @@ var readSharedPathsFromArgs = function(){
 
 var getNodeType = function(nodePath, callback){
 	fs.stat(nodePath, function(err, stats){
-		if(err) callback(err);
+		if(err){
+		    console.log(err);
+		    return callback(err);			
+		} 
 		else{
 			var nodeType;
 			if(stats.isFile()){
@@ -67,7 +71,6 @@ var getArrayOfNodes = function(nodePaths, callback){
 			}
 		});
 	});
-	//return callback(null, '');
 }
 
 var sortNodesAlphabetically = function(nodes){
@@ -90,38 +93,49 @@ var addPathToFilenames = function(_path, filenames, callback){
 }
 
 exports.test = function (req,res){
-
-	//res.end();
 	res.sendfile('c:/temp/a.mp4');
-	//res.attachment('e:/archive.pst');
 }
 
-exports.stat = function (req,res){
-	fs.stat(req.body.path, function(err, stats){
-		res.send(stats);
-	});
+exports.stat = function (p, callback){
+	if(fs.existsSync(p)){
+		fs.stat(p, function(err, stats){
+			if(err){
+				console.log(err);
+				return callback();
+			}
+			else{
+				return callback(stats);
+			}
+		});
+	}
+	else{
+		console.log(new Error("Path doesn't exist"));
+		return callback();
+	}
 }
 
 //list directory
-exports.ls = function(req,res){
-	var p = req.body.path;
+exports.ls = function(p, callback){
+	//var p = req.body.path;
 	if(!p){
 		getArrayOfNodes(sharedPaths, function(nodes){
-			return res.send(nodes);
+			return callback(null ,nodes);
 		});
 	}
 	else{
 		if(!fs.existsSync(p)){
-			return res.send("Path not found");
+			var err = new Error("Path not found");
+			console.log(err);
+			return callback(err, []);
 		}
 		else{
 			fs.readdir(p, function(err,files){
 				//empty dir
-				if(files.length < 1) return res.send([]);
+				if(files.length < 1) return callback(null, []);
 				addPathToFilenames(p, files, function(filePaths){
 					getArrayOfNodes(filePaths, function(err,nodes){
 						if(err) console.log(err);
-						return res.send(nodes);
+						return callback(null, nodes);
 					});
 				});
 			});
@@ -142,6 +156,7 @@ exports.upload = function (req,res){
 		var os = fs.createWriteStream(destinationFile);
 
 		util.pump(is,os,function(err){
+			if(err) console.log(err);
 			fs.unlinkSync(req.files.fileUpload.path);
 			res.send('');
 		});
@@ -164,27 +179,41 @@ exports.uploadresumable = function(req,res){
     });	
 }
 
-exports.chdir = function(req, res){
-	var p = req.body.path;
-	if(fs.existsSync(p)){
-		process.chdir(p);
-	}
-	res.send('');
+exports.pwd = function(callback){
+	callback(process.cwd());
 }
 
-exports.memory = function(req,res){
-	res.json({ total : os.totalmem(), free : os.freemem() });
+exports.chdir = function(p, callback){
+	if(fs.existsSync(p)){
+		try{
+			process.chdir(p);
+		}
+		catch(err){
+			console.log(err);
+			callback(err);
+		}
+	}
+	else{//directory doesn't exist
+		return callback(new Error("Directory doesn't exist"));
+	}
+	return callback(null);
+}
+
+exports.memory = function(callback){
+	callback({ total : os.totalmem(), free : os.freemem() });
 }
 
 //get disk space
-exports.diskspace = function(req,res){
-	var drive = req.body.drive;
-
+exports.diskspace = function(drive, callback){
 	if(drive){
 		diskspace.check(drive, function (total, free, status)
 		{
-		    res.json({ total : total, free : free });
+		    return callback({ total : total, free : free });
 		});
+	}
+	else{
+		console.log(new Error("Drive was not specified"));
+		return callback();
 	}
 }
 
@@ -196,32 +225,74 @@ exports.download = function (req,res){
 	}
 }
 
-//delete a file
-exports.delete = function(req,res){
-	var p = req.body.path;
-	if(p){
-		//if p is file
-		fs.unlink(p, function(err){
-			if(!err){
-				console.log('file: ' + p + ' was successfully deleted');
+var deleteFile = function(p, callback){
+	fs.unlink(p, function(err){
+		if(!err){
+			console.log('file: ' + p + ' was successfully deleted');
+			return callback({status:"success"});
+		}
+		else{
+			console.log(err);
+			return callback({status: "fail"});
+		}
+	});	
+}
+
+var deleteDirectory = function(p, callback){
+	wrench.rmdirRecursive(p, function(err){
+		if(err){
+			console.log(err);				
+			return callback({status: "fail"});
+		} 
+		else{
+			return callback({status:"success"});
+		}
+	});
+}
+
+//delete file or folder
+exports.delete = function(p, callback){
+	if(fs.existsSync(p)){
+		fs.stat(p, function(err, stats){
+			if(err){
+				console.log(err);
+				return callback({status:"fail"});
 			}
 			else{
-				console.log(err);
+				if(stats.isFile()){
+					deleteFile(p, function(status){
+						return callback(status);
+					});
+				}
+				else if(stats.isDirectory()){
+					deleteDirectory(p, function(status){
+						return callback(status);
+					});
+				}
 			}
 		});
-		res.send('');
-		//if p is directory
-		//remove recursively
+	}
+	else{
+		return callback({status:"fail"});
 	}
 }
 
 //create new directory
-exports.createDir = function(req,res){
-	var p = req.body.path;
+exports.createDir = function(p, callback){
 	if(p){
 		fs.mkdir(p, function(err){
-			res.send('');
+			if(err){//
+				console.log(err);	
+				return callback({status:"fail"});
+			}
+			else{
+				return callback({status:"success"});
+			}
 		});
+	}
+	else{//path is not defined
+		console.log(new Error('Path is not defined'));
+		return callback({status:"fail"});
 	}
 }
 

@@ -2,6 +2,7 @@ var express = require("express");
 var util = require("util");
 var fileserver = require('./fileserver');
 var fs = require('fs');
+var routes = require("./routes");
 
 var app = express();
 var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
@@ -14,18 +15,22 @@ app.configure(function(){
 
 process.chdir('/');
 
-app.post('/chdir', fileserver.chdir);
+//app.post('/rmdir', fileserver.rmdir);
+
+app.get('/pwd', routes.pwd);
+
+app.post('/chdir', routes.chdir);
 
 //get memory (RAM)
-app.get('/memory', fileserver.memory);
+app.get('/memory', routes.memory);
 
 //get disk space
-app.post('/diskspace', fileserver.diskspace);
+app.post('/diskspace', routes.diskspace);
 
 app.get('/test', fileserver.test);
 
 //list
-app.post('/ls', fileserver.ls);
+app.post('/ls', routes.ls);
 
 //upload files
 app.post('/upload', fileserver.upload);
@@ -36,13 +41,13 @@ app.post('/uploadresumable', fileserver.uploadresumable);
 //download a file
 app.post('/download', fileserver.download);
 
-//delete a file
-app.del('/delete', fileserver.delete);
+//delete file or folder
+app.del('/delete', routes.delete);
 
-app.post('/stat', fileserver.stat);
+app.post('/stat', routes.stat);
 
 //create a directory
-app.post('/mkdir', fileserver.createDir);
+app.post('/mkdir', routes.createDir);
 
 //add http link to download
 app.post('/httpDownload', fileserver.httpDownload);
