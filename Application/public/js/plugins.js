@@ -12,3 +12,17 @@ if (!(window.console && console.log)) {
 }
 
 // Place any jQuery/helper plugins in here.
+(function(ns, $, undefined) {
+
+    ns.renderTemplate = function(item, callback) {
+
+            var file = '../templates/' + item.name + '.html';
+
+            $.when($.get(file)).done(function(tmplData) {
+                $.templates({tmpl: tmplData });
+                $(item.selector).html($.render.tmpl(item.data));
+                callback();
+            });
+    };
+
+})(window.utils = window.utils || {}, jQuery);

@@ -21,11 +21,10 @@
 
                 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-                <link rel="stylesheet" href="css/normalize.css"/>
-                <link rel="stylesheet" href="css/slate-bootstrap.min.css"/>
-                <link rel="stylesheet" href="css/bootstrap-responsive.min.css"/>
+                <link rel="stylesheet" href="css/static.css"/>
                 <link rel="stylesheet" href="fonts/font-awesome.css"/>
                 <link rel="stylesheet" href="css/main.css">
+
 
                 <script src="js/vendor/modernizr-2.6.1.min.js"></script>
             </head>
@@ -70,100 +69,11 @@
                     </div>
                 </div>
 
-                <!-- Templates -->
-                <!-- TODO: improve template by variable declaration and DRYing -->
-                <script type="text/x-jsrender-tmpl" id="fileListItemTemplate">
-                <li class="row-fluid" data-name="{{:name}}" data-type="{{:type}}">
-                {{if type == "dir"}}
-                <div class="span8"> <i class="icon-folder-close"></i>
-                <span>{{:name.split('/').pop()}}</span>
-                </div>
-                <div  class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-folder-open hover-option' title='Browse'/>
-                </div>
-                {{else type == "inode/symlink"}}
-                <div class="span8"> <i class="icon-external-link"></i>
-                <span>{{:name.split('/').pop()}}</span>
-                </div>
-                <div class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                </div>
-                {{else type.indexOf("video/") != -1}}
-                <div class="span8">
-                <i class="icon-film"></i>
-                <span>{{:name.split('/').pop()}}</span>
-                </div>
-                <div class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-play hover-option' title='Stream'/>
-                </div>
-                {{else type.indexOf("audio/") != -1}}
-                <div class="span8">
-                <i class="icon-volume-up"></i>
-                <span>{{:name.split('/').pop()}}</span>
-                </div>
-                <div class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-music hover-option' title='Stream'/>
-                </div>
-                {{else type.indexOf("image/") != -1}}
-                <div class="span8">
-                <i class="icon-picture"></i>
-                <span>{{:name.split('/').pop()}}</span>
-                </div>
-                <div class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-eye-open hover-option' title='View'/>
-                </div>
-                {{else type.indexOf("text/") != -1}}
-                <div class="span8">
-                <i class="icon-edit"></i>
-                <span>{{:name.split('/').pop()}}</span>
-                </div>
-                <div class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-edit hover-option' title='Edit'/>
-                </div>
-                {{else}}
-                <div class="span8">
-                <i class="icon-file"></i>
-                <span>{{:name.split('/').pop()}}</span>
-                </div>
-                <div class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                </div>
-                {{/if}}
-                </li>
-                </script>
-
-                <script type="text/x-jsrender-tmpl" id="emptyDirTemplate">
-                <li class="row-fluid">
-                <div class="span12">
-                <i class="icon-minus-sign"></i><span>Nothing here.</span>
-                </div>
-                </li>
-                </script>
-
                 <!-- Dialogs-->
-
-
                 <div class="modal fade in" id="helpDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="myModalLabel"><p><i class="icon-question-sign"></i> Help</p></h3>
+                        <h3 ><p><i class="icon-question-sign"></i> Help</p></h3>
                     </div>
                     <div class="modal-body">
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -181,7 +91,7 @@
                 <div class="modal fade in" id="settingsDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="myModalLabel"><p><i class="icon-cog"></i> Settings</p></h3>
+                        <h3 ><p><i class="icon-cog"></i> Settings</p></h3>
                     </div>
                     <div class="modal-body">
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -199,7 +109,7 @@
                 <div class="modal fade in" id="newFolderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="myModalLabel"><p><i class="icon-folder-close"></i> Create New Folder</p></h3>
+                        <h3 ><p><i class="icon-folder-close"></i> Create New Folder</p></h3>
                     </div>
                     <div class="modal-body">
                        <input type="text" placeholder="Enter folder name" id="newFolderName"/>
@@ -207,6 +117,20 @@
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                         <button class="btn btn-info" id="btnCreateNewFolder">Done</button>
+                    </div>
+                </div>
+
+                <div class="modal fade in" id="deleteFileDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 ><p><i class="icon-trash"></i> Delete File</p></h3>
+                    </div>
+                    <div class="modal-body">
+                       Are you sure you want to delete this file?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        <button class="btn btn-info" id="btnDeleteFile">OK</button>
                     </div>
                 </div>
                 <!-- /Dialogs-->

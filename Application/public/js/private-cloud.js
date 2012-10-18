@@ -43,4 +43,11 @@
              callback(result);
         });
     };
+
+    // Get current directory absolute path
+    ns.pwd = function(callback){
+        $.get("/pwd", function(fullPath){
+            callback(fullPath);
+        });
+    };
 })(window.privateCloud = window.privateCloud || {}, jQuery);

@@ -56,7 +56,7 @@ $(function() {
     $("button#btnCreateNewFolder").click(function() {
         var folderName = $("input#newFolderName").val();
         if(isValid(folderName)) {
-            privateCloud.mkdir(folderName, function(){
+            privateCloud.mkdir(folderName, function() {
                 $("div#newFolderDialog").modal("hide");
                 privateCloud.ls(".", listFiles);
             });
@@ -69,30 +69,48 @@ $(function() {
 
 function listFiles(files) {
     if(files.length > 0) {
-        $("ul#files").hide().html($("#fileListItemTemplate").render(files)).fadeIn();
 
-        // bind dir list item click
-        $("ul#files li[data-type='dir']").click(function() {
-            privateCloud.cd($(this).data("name"), function() {
-                privateCloud.ls(".", listFiles);
+        // Render file list.
+        $("ul#files").hide();
+        utils.renderTemplate({
+            name: 'fileListItem',
+            data: files,
+            selector: "ul#files"
+        }, function() {
+            $("ul#files li[data-type='dir']").click(function() {
+                privateCloud.cd($(this).data("name"), function() {
+                    privateCloud.ls(".", listFiles);
+                });
             });
         });
+        $("ul#files").fadeIn();
+
     } else {
-        $("ul#files").hide().html($("#emptyDirTemplate").render()).fadeIn();
 
-        // go back on click
-        $("ul#files li").click(function() {
-            privateCloud.cd("..", function() {
-                privateCloud.ls(".", listFiles);
+        // Render empty dir message.
+        $("ul#files").hide();
+        utils.renderTemplate({
+            name: 'emptyDirListItem',
+            data: null,
+            selector: "ul#files"
+        }, function() {
+            // go back on click
+            $("ul#files li").click(function() {
+                privateCloud.cd("..", function() {
+                    privateCloud.ls(".", listFiles);
+                });
             });
         });
+        $("ul#files").fadeIn();
     }
 }
 
 // validates file/dir name
+
 function isValid(fname) {
     var rg1 = /^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
     var rg2 = /^\./; // cannot start with dot (.) in windows
     var rg3 = /^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names in windows
-    return fname && rg1.test(fname) /*&& !rg2.test(fname) && !rg3.test(fname)*/;
+    return fname && rg1.test(fname) /*&& !rg2.test(fname) && !rg3.test(fname)*/
+    ;
 }

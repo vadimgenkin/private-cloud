@@ -1,0 +1,127 @@
+@black:                 #000;
+@grayDarker:            #272B30;
+@grayDark:              #3A3F44;
+@gray:                  #52575C;
+@grayLight:             #757C82;
+@grayLighter:           #BBBFC2;
+@white:                 #fff;
+
+@blue:                  #02A1DD;
+@blueDark:              #108CBB;
+@green:                 #87CA4D;
+@red:                   #9d261d;
+@yellow:                #F6D30D;
+@orange:                #f89406;
+@pink:                  #c3325f;
+@purple:                #7a43b6;
+
+@btnDangerBackgroundHighlight:      #bd362f;
+
+.hover-scale (@scale: 1.3)
+{
+    -moz-transform: scale(@scale);
+    -webkit-transform: scale(@scale);
+    -o-transform: scale(@scale);
+    -ms-transform: scale(@scale);
+    transform: scale(@scale);
+}
+
+.hover-gradient(@angle: 280deg, @startColor: @grayDarker, @endColor: @grayDark)
+{
+    background-image: -moz-linear-gradient(@angle, @startColor, @endColor);
+    background-image: -webkit-linear-gradient(@angle, @startColor, @endColor);
+    background-image: -o-linear-gradient(@angle, @startColor, @endColor);
+    background-image: linear-gradient(@angle, @startColor, @endColor);
+}
+
+.hover-transition(@prop: color, @time: .5s)
+{
+    -webkit-transition: @prop @time;
+    -moz-transition: @prop @time;
+    -o-transition: @prop @time;
+    transition: @prop @time;
+}
+
+ul#files
+{
+    margin: 0 1em;
+    font-size: 1.3em;
+    li
+    {
+        list-style: none;
+        padding: .4em 0;
+        border-bottom: 1px solid @grayDark;
+        i
+        {
+            padding: .4em;
+        }
+        div
+        {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space:nowrap;
+            .span4
+            {
+                padding-top: .3em;
+            }
+        }
+        a.hover-option
+        {
+            visibility: hidden;
+            margin-left: .7em;
+            color: inherit;
+            float: right;
+            text-decoration: none;
+            font-size: 1.3em;
+            padding-top: .25em;
+            .hover-transition;
+        }
+        &:hover
+        {
+            .hover-gradient;
+            cursor: pointer;
+            a.hover-option
+            {
+                visibility: visible;
+                &:hover
+                {
+                    color: @grayLighter;
+                    .hover-scale;
+
+                    &.icon-trash
+                    {
+                        color: @btnDangerBackgroundHighlight;
+                    }
+                    &.icon-cloud
+                    {
+                        color: @blue;
+                    }
+                }
+                &.icon-folder-open, &.icon-download
+                {
+                    color: @grayLighter;
+                }
+            }
+        }
+    }
+}
+nav#nav-menu a.brand
+{
+    text-shadow: -1px -1px 4px #222;
+    i.icon-cloud
+    {
+        color: @blue;
+    }
+}
+nav#nav-menu li a
+{
+    font-size: 1.3em;
+   .hover-transition;
+    &:hover
+    {
+        i
+        {
+            .hover-scale;
+        }
+    }
+}
