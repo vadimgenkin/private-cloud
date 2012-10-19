@@ -1,45 +1,73 @@
 var home = "/home/lxgreen"; //TODO: home location -- to config file
+var levelUp = "..";
+var currentDir = ".";
+
 $(function() {
 
-    // init home ls
-    privateCloud.cd(home, function() {
-        privateCloud.ls(".", listFiles);
-    });
+    // start @ home
+    browse(home);
 
     // bind menu links
-    $("a#nav-up").tooltip({
-        placement: 'bottom',
-        title: 'Level Up'
-    }).click(function() {
-        privateCloud.cd("..", function() {
-            privateCloud.ls(".", listFiles);
-        });
+    $("a#nav-up").tooltip({placement: 'bottom', title: 'Level Up'}).click(function() {browse(levelUp);});
+
+    $("a#nav-refresh").tooltip({placement: 'bottom', title: 'Refresh'}).click(function() {privateCloud.ls(currentDir, listFiles); });
+
+    $("a#nav-home").tooltip({placement: 'bottom', title: 'Home'}).click(function() {browse(home); });
+
+    $("a#nav-upload").tooltip({placement: 'bottom', title: 'Upload File'});
+
+    $("a#nav-new-folder").tooltip({placement: 'bottom', title: 'New Folder'}).click(function() {
+        // set new folder dialog data
+        var newFolderDialog = {
+            data: {
+                content: '<input type="text" placeholder="Enter folder name" autofocus="autofocus" id="newFolderName"/>',
+                header: "Create New Folder",
+                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-info" id="btnCreateNewFolder">Done</button>',
+                xButton: "×",
+                id: "newFolderDialog",
+                iconClass: "icon-folder-close"
+            },
+            selector: "div#dialogPlaceholder"
+        };
+
+        // show new folder dialog
+        utils.showDialog(newFolderDialog, function() {
+
+            var input = $("input#newFolderName");
+            var doneButton = $("button#btnCreateNewFolder");
+
+            doneButton.click(function() {
+                var folderName = input.val();
+                if(isValid(folderName)) {
+                    privateCloud.mkdir(folderName, function(result) {
+                        if(result.status === "success"){
+                            $("div#newFolderDialog").modal("hide");
+                            privateCloud.ls(currentDir, listFiles);
+                            utils.showNotification({ message : "Folder '" + folderName +"' created successfully.", type : "success"});
+                        }
+                        else {
+                           utils.showNotification({ message : "Error occured during folder creation."});
+                           input.focus();
+                        }
+
+                    });
+                }
+                else{
+                    utils.showNotification({ message : "Folder name cannot contain \ / : * ? \" < > |"});
+                    input.focus();
+                }
+            });
+
+            input.keyup(function(e){
+                if(e.keyCode === 13){
+                    doneButton.click();
+                }
+            });
+
+        }, {shown : function(){$("input#newFolderName").focus(); } });
+
     });
 
-    $("a#nav-refresh").tooltip({
-        placement: 'bottom',
-        title: 'Refresh'
-    }).click(function() {
-        privateCloud.ls(".", listFiles);
-    });
-
-    $("a#nav-home").tooltip({
-        placement: 'bottom',
-        title: 'Home'
-    }).click(function() {
-        privateCloud.cd(home, function() {
-            privateCloud.ls(".", listFiles);
-        });
-    });
-
-    $("a#nav-upload").tooltip({
-        placement: 'bottom',
-        title: 'Upload File'
-    });
-    $("a#nav-new-folder").tooltip({
-        placement: 'bottom',
-        title: 'New Folder'
-    });
     $("a#nav-settings").tooltip({
         placement: 'bottom',
         title: 'Settings'
@@ -52,35 +80,18 @@ $(function() {
         placement: 'bottom',
         title: 'Help'
     });
-
-    $("button#btnCreateNewFolder").click(function() {
-        var folderName = $("input#newFolderName").val();
-        if(isValid(folderName)) {
-            privateCloud.mkdir(folderName, function() {
-                $("div#newFolderDialog").modal("hide");
-                privateCloud.ls(".", listFiles);
-            });
-        }
-    });
-
 });
 
 // build file list view
-
 function listFiles(files) {
     if(files.length > 0) {
 
         // Render file list.
         $("ul#files").hide();
-        utils.renderTemplate({
-            name: 'fileListItem',
-            data: files,
-            selector: "ul#files"
-        }, function() {
-            $("ul#files li[data-type='dir']").click(function() {
-                privateCloud.cd($(this).data("name"), function() {
-                    privateCloud.ls(".", listFiles);
-                });
+        utils.renderTemplate(
+            {name: 'fileListItem', data: files, selector: "ul#files"},
+            function() {$("ul#files li[data-type='dir']").click(function() {
+                browse($(this).data("name"));
             });
         });
         $("ul#files").fadeIn();
@@ -89,28 +100,33 @@ function listFiles(files) {
 
         // Render empty dir message.
         $("ul#files").hide();
-        utils.renderTemplate({
-            name: 'emptyDirListItem',
-            data: null,
-            selector: "ul#files"
-        }, function() {
+        utils.renderTemplate({name: 'emptyDirListItem', data: null, selector: "ul#files"},
+        function() {
             // go back on click
             $("ul#files li").click(function() {
-                privateCloud.cd("..", function() {
-                    privateCloud.ls(".", listFiles);
-                });
+                browse(levelUp);
             });
+            $("ul#files").fadeIn();
         });
-        $("ul#files").fadeIn();
     }
 }
 
-// validates file/dir name
+// changes dir and lists its content
+function browse(path) {
+    privateCloud.cd(path, function(result) {
+        if(result.status === "success") {
+            privateCloud.ls(currentDir, listFiles);
+        } else {
+            // TODO: change static message with server error message.
+            utils.showNotification({message : "You have no access permission to '" + path + "'."});
+        }
+    });
+}
 
+// validates file/dir name
 function isValid(fname) {
     var rg1 = /^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
     var rg2 = /^\./; // cannot start with dot (.) in windows
     var rg3 = /^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names in windows
-    return fname && rg1.test(fname) /*&& !rg2.test(fname) && !rg3.test(fname)*/
-    ;
+    return fname && rg1.test(fname); /*&& !rg2.test(fname) && !rg3.test(fname)*/
 }

@@ -23,6 +23,7 @@
 
                 <link rel="stylesheet" href="css/static.css"/>
                 <link rel="stylesheet" href="fonts/font-awesome.css"/>
+                <link rel="stylesheet" href="css/bootstrap-notify.css">
                 <link rel="stylesheet" href="css/main.css">
 
 
@@ -48,7 +49,7 @@
                                             <li><a href="#" id="nav-up"><i class="icon-arrow-up"></i></a></li>
                                             </ul>
                                             <ul class="nav" id="filesystem">
-                                            <li><a href="#newFolderDialog" id="nav-new-folder" data-toggle="modal">+<i class="icon-folder-close"></i></a></li>
+                                            <li><a href="#newFolderDialog" id="nav-new-folder">+<i class="icon-folder-close"></i></a></li>
                                             <li><a href="#" id="nav-upload">+<i class="icon-file"></i></a></li>
                                             </ul>
                                             <ul class="nav pull-right" id="misc">
@@ -69,7 +70,13 @@
                     </div>
                 </div>
 
-                <!-- Dialogs-->
+                <!-- Dialogs placehoder-->
+                <div id="dialogPlaceholder"></div>
+                <div class='notifications top-left'></div>
+                <div class='notifications top-right'></div>
+                <div class='notifications bottom-right'></div>
+                <div class='notifications bottom-left'></div>
+
                 <div class="modal fade in" id="helpDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -106,20 +113,6 @@
                     </div>
                 </div>
 
-                <div class="modal fade in" id="newFolderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 ><p><i class="icon-folder-close"></i> Create New Folder</p></h3>
-                    </div>
-                    <div class="modal-body">
-                       <input type="text" placeholder="Enter folder name" id="newFolderName"/>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                        <button class="btn btn-info" id="btnCreateNewFolder">Done</button>
-                    </div>
-                </div>
-
                 <div class="modal fade in" id="deleteFileDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -141,6 +134,7 @@
                 <!--TODO: check for jsRender SDN -->
                 <script src="js/vendor/jsrender.js"></script>
                 <script src="js/vendor/bootstrap.min.js"></script>
+                <script src="js/vendor/bootstrap-notify.js"></script>
                 <script src="js/plugins.js"></script>
                 <script src="js/private-cloud.js"></script>
                 <script src="js/main.js"></script>
