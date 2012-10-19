@@ -41,6 +41,14 @@ if(!(window.console && console.log)) {
 
             var dialogBox = $("#" + dialog.data.id);
 
+            // submit on enter
+            dialogBox.keyup(function(e){
+                if(e.keyCode === 13){
+                    $(".btn-primary").click();
+                }
+            });
+
+            // modal event handlers registration
             if(eventHandlers.hidden) dialogBox.on('hidden', function(){eventHandlers.hidden();});
             if(eventHandlers.hide) dialogBox.on('hide', function(){eventHandlers.hide();});
             if(eventHandlers.shown) dialogBox.on('shown', function(){eventHandlers.shown();});

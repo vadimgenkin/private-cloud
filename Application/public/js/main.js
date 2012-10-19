@@ -22,7 +22,7 @@ $(function() {
             data: {
                 content: '<input type="text" placeholder="Enter folder name" autofocus="autofocus" id="newFolderName"/>',
                 header: "Create New Folder",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-info" id="btnCreateNewFolder">Done</button>',
+                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
                 xButton: "×",
                 id: "newFolderDialog",
                 iconClass: "icon-folder-close"
@@ -55,12 +55,6 @@ $(function() {
                 else{
                     utils.showNotification({ message : "Folder name cannot contain \ / : * ? \" < > |"});
                     input.focus();
-                }
-            });
-
-            input.keyup(function(e){
-                if(e.keyCode === 13){
-                    doneButton.click();
                 }
             });
 
