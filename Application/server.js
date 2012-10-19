@@ -3,7 +3,6 @@ var util = require("util");
 var fileserver = require('./fileserver');
 var fs = require('fs');
 var routes = require("./routes");
-var lessMiddleware = require('less-middleware');
 
 var app = express();
 var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
@@ -12,7 +11,7 @@ app.configure(function(){
 	app.use(express.static(__dirname + "/public"));
 	app.use(express.bodyParser());
 	app.use(express.logger({stream: logFile}));
-            app.use(lessMiddleware({src: __dirname + '/public', force: true })); });
+});
 
 process.chdir('/');
 
@@ -27,8 +26,6 @@ app.get('/memory', routes.memory);
 
 //get disk space
 app.post('/diskspace', routes.diskspace);
-
-app.get('/test', fileserver.test);
 
 //list
 app.post('/ls', routes.ls);

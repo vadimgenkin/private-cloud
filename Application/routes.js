@@ -1,15 +1,12 @@
 var fileserver = require('./fileserver');
 
-exports.test = function (req,res){
-}
-
 exports.stat = function (req,res){
-	fileserver.stat(req.body.path, function(stats){
+	fileserver.stat(req.body.path, function(err,stats){
 		if(stats){
 			res.send(stats);
 		}
 		else{
-			res.send('');
+			res.send({error : err.message});
 		}
 	});
 }
@@ -19,6 +16,9 @@ exports.ls = function(req,res){
 	fileserver.ls(req.body.path, function(err, nodes){
 		if(!err){
 			res.send(nodes);
+		}
+		else{
+			res.send({error : err.message});
 		}
 	});
 }
@@ -39,8 +39,8 @@ exports.uploadresumable = function(req,res){
 
 exports.chdir = function(req, res){
 	fileserver.chdir(req.body.path, function(err){
-		if(err) res.send({status : "fail"});
-		else res.send({status : "success"});
+		if(err) res.send({ error : err.message });
+		else res.send('');
 	});
 }
 
@@ -52,12 +52,12 @@ exports.memory = function(req,res){
 
 //get disk space
 exports.diskspace = function(req,res){
-	fileserver.diskspace(req.body.path, function(space){
-		if(space){
+	fileserver.diskspace(req.body.path, function(err, space){
+		if(!err){
 			res.json(space);
 		}
 		else{
-			res.send('');
+			res.send({status:'fail', error : err.message});
 		}
 	});
 }
@@ -68,8 +68,9 @@ exports.download = function (req,res){
 
 //delete file or folder
 exports.delete = function(req,res){
-	fileserver.delete(req.body.path, function(status){
-		res.send(status);
+	fileserver.delete(req.body.path, function(err, status){
+		if(!err) res.send(status);
+		else res.send({error : err.message});
 	});
 }
 

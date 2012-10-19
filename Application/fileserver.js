@@ -12,6 +12,12 @@ var httpFileDownloader = require('./http-file-downloader');
 
 var sharedPaths = [ 'c:/temp', 'e:/Vadim' ];
 
+var customErrorMessages = {
+	pathNotFound : "Path doesn't exist",
+	pathNotDefined : "Path was not specified",
+	driveNotDefined : "Drive was not specified"
+}
+
 var readSharedPathsFromArgs = function(){
 	if(process.argv.length > 2) sharedPaths = [];
 
@@ -92,25 +98,21 @@ var addPathToFilenames = function(_path, filenames, callback){
 	return callback(filePaths);
 }
 
-exports.test = function (req,res){
-	res.sendfile('c:/temp/a.mp4');
-}
-
 exports.stat = function (p, callback){
 	if(fs.existsSync(p)){
 		fs.stat(p, function(err, stats){
 			if(err){
 				console.log(err);
-				return callback();
+				return callback(err, null);
 			}
 			else{
-				return callback(stats);
+				return callback(null, stats);
 			}
 		});
 	}
 	else{
 		console.log(new Error("Path doesn't exist"));
-		return callback();
+		return callback(err, null);
 	}
 }
 
@@ -208,12 +210,12 @@ exports.diskspace = function(drive, callback){
 	if(drive){
 		diskspace.check(drive, function (total, free, status)
 		{
-		    return callback({ total : total, free : free });
+		    return callback(null, { total : total, free : free });
 		});
 	}
 	else{
 		console.log(new Error("Drive was not specified"));
-		return callback();
+		return callback(err, null);
 	}
 }
 
@@ -229,11 +231,11 @@ var deleteFile = function(p, callback){
 	fs.unlink(p, function(err){
 		if(!err){
 			console.log('file: ' + p + ' was successfully deleted');
-			return callback({status:"success"});
+			return callback(null);
 		}
 		else{
 			console.log(err);
-			return callback({status: "fail"});
+			return callback(err);
 		}
 	});	
 }
@@ -242,10 +244,10 @@ var deleteDirectory = function(p, callback){
 	wrench.rmdirRecursive(p, function(err){
 		if(err){
 			console.log(err);				
-			return callback({status: "fail"});
+			return callback(err);
 		} 
 		else{
-			return callback({status:"success"});
+			return callback(null);
 		}
 	});
 }
@@ -256,24 +258,24 @@ exports.delete = function(p, callback){
 		fs.stat(p, function(err, stats){
 			if(err){
 				console.log(err);
-				return callback({status:"fail"});
+				return callback(err, null);
 			}
 			else{
 				if(stats.isFile()){
-					deleteFile(p, function(status){
-						return callback(status);
+					deleteFile(p, function(err, status){
+						return callback(err, status);
 					});
 				}
 				else if(stats.isDirectory()){
-					deleteDirectory(p, function(status){
-						return callback(status);
+					deleteDirectory(p, function(err, status){
+						return callback(err, status);
 					});
 				}
 			}
 		});
 	}
 	else{
-		return callback({status:"fail"});
+		return callback(new Error("Path doesn't exist"));
 	}
 }
 
