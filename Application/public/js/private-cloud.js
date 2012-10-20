@@ -1,53 +1,102 @@
 (function(ns, $, undefined) {
+    // Basic ajax API call
+    // settings = {requestMethod, url, data, success, error, fail}
+    var apiCall = function(settings) {
+
+        // handle default request fail
+        var defaultSettings = {
+            fail : function(){
+                utils.showNotification({message : "Connectivity problem detected." });
+            },
+            error : function(e) {
+                utils.showNotification({message : e.error});
+            }
+        };
+
+        $.extend(defaultSettings, settings);
+
+        $.ajax({
+            type : defaultSettings.requestMethod,
+            url : defaultSettings.url,
+            data : defaultSettings.data
+        })
+        .done(function(result) {
+                if(result.error) {
+                        defaultSettings.error(result);
+                    } else {
+                        defaultSettings.success(result);
+                    }
+                })
+        .fail(function() {
+            defaultSettings.fail();
+        });
+    };
 
     // List directory
     ns.ls = function(path, callback) {
-        $.post("/ls", {
-            path: path
-        }, function(files) {
-            callback(files);
+        apiCall({
+            requestMethod : "post",
+            url : "/ls",
+            data : {path : path},
+            success :  function(files) {
+                callback(files);
+            }
         });
     };
 
     // Delete file
-    ns.rm = function(path, callback) {
-        $.ajax({
+    ns.rm = function(path, success, error) {
+        apiCall({
             url: '/delete',
-            type: 'DELETE',
-            data: {
-                path: path
-            },
+            requestMethod: 'DELETE',
+            data: { path: path },
             success: function(result) {
-                callback(result);
+                success(result);
             },
             error: function(result) {
-                callback(result);
+                error(result);
             }
         });
     };
 
     // Make directory
-    ns.mkdir = function(path, callback) {
-        $.post("/mkdir", {
-            path: path
-        }, function(result) {
-            callback(result);
+    ns.mkdir = function(path, success, error) {
+        apiCall({
+            requestMethod : "post",
+            url : "/mkdir",
+            data : {path : path},
+            success :  function(files) {
+                success(files);
+            },
+            error : function(e) {
+                error(e);
+            }
         });
     };
 
     // Change directory
     ns.cd = function(path, callback) {
-        $.post("/chdir", {
-            path: path
-        }, function(result) {
-             callback(result);
+        apiCall({
+            requestMethod : "post",
+            url : "/chdir",
+            data : {path : path},
+            success :  function(result) {
+                callback(files);
+            }
         });
     };
 
     // Get current directory absolute path
-    ns.pwd = function(callback){
-        $.get("/pwd", function(fullPath){
-            callback(fullPath);
+    ns.pwd = function(success, error){
+        apiCall({
+            requestMethod : "get",
+            url : "/pwd",
+            success :  function(result) {
+                success(files);
+            },
+            error : function(e) {
+                error(e);
+            }
         });
     };
 })(window.privateCloud = window.privateCloud || {}, jQuery);

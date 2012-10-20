@@ -4,6 +4,10 @@ var currentDir = ".";
 
 $(function() {
 
+    $(document).ajaxError(function(event, xhr, settings, error){
+        utils.showNotification({message : "Connectivity problem detected."});
+    });
+
     // start @ home
     browse(home);
 
@@ -38,28 +42,22 @@ $(function() {
 
             doneButton.click(function() {
                 var folderName = input.val();
-                if(isValid(folderName)) {
-                    privateCloud.mkdir(folderName, function(result) {
-                        if(result.status === "success"){
+                //if(isValid(folderName)) {
+                    privateCloud.mkdir(folderName,
+                        // success
+                        function() {
                             $("div#newFolderDialog").modal("hide");
                             privateCloud.ls(currentDir, listFiles);
                             utils.showNotification({ message : "Folder '" + folderName +"' created successfully.", type : "success"});
-                        }
-                        else {
-                           utils.showNotification({ message : "Error occured during folder creation."});
+                        },
+                        // error
+                        function(e) {
+                           utils.showNotification({ message : e.error });
                            input.focus();
                         }
-
-                    });
-                }
-                else{
-                    utils.showNotification({ message : "Folder name cannot contain \ / : * ? \" < > |"});
-                    input.focus();
-                }
+                    );
             });
-
         }, {shown : function(){$("input#newFolderName").focus(); } });
-
     });
 
     $("a#nav-settings").tooltip({
@@ -83,11 +81,17 @@ function listFiles(files) {
         // Render file list.
         $("ul#files").hide();
         utils.renderTemplate(
-            {name: 'fileListItem', data: files, selector: "ul#files"},
-            function() {$("ul#files li[data-type='dir']").click(function() {
-                browse($(this).data("name"));
-            });
-        });
+            {
+                name: 'fileListItem',
+                data: files,
+                selector: "ul#files"
+            },
+            function() {
+                $("ul#files li[data-type='dir']").click(function() {
+                    browse($(this).data("name"));
+                });
+            }
+        );
         $("ul#files").fadeIn();
 
     } else {
@@ -107,14 +111,12 @@ function listFiles(files) {
 
 // changes dir and lists its content
 function browse(path) {
-    privateCloud.cd(path, function(result) {
-        if(result.status === "success") {
+    privateCloud.cd(path,
+        // success
+        function() {
             privateCloud.ls(currentDir, listFiles);
-        } else {
-            // TODO: change static message with server error message.
-            utils.showNotification({message : "You have no access permission to '" + path + "'."});
         }
-    });
+    );
 }
 
 // validates file/dir name
