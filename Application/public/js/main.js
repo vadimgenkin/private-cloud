@@ -42,36 +42,62 @@ $(function() {
 
             doneButton.click(function() {
                 var folderName = input.val();
-                //if(isValid(folderName)) {
-                    privateCloud.mkdir(folderName,
-                        // success
-                        function() {
-                            $("div#newFolderDialog").modal("hide");
-                            privateCloud.ls(currentDir, listFiles);
-                            utils.showNotification({ message : "Folder '" + folderName +"' created successfully.", type : "success"});
-                        },
-                        // error
-                        function(e) {
-                           utils.showNotification({ message : e.error });
-                           input.focus();
-                        }
-                    );
+                privateCloud.mkdir(folderName,
+                    // success
+                    function() {
+                        $("div#newFolderDialog").modal("hide");
+                        privateCloud.ls(currentDir, listFiles);
+                        utils.showNotification({ message : "Folder '" + folderName +"' created successfully.", type : "success"});
+                    },
+                    // error
+                    function(e) {
+                       utils.showNotification({ message : e.error });
+                       input.focus();
+                    }
+                );
             });
         }, {shown : function(){$("input#newFolderName").focus(); } });
     });
 
-    $("a#nav-settings").tooltip({
-        placement: 'bottom',
-        title: 'Settings'
+    $("a#nav-settings").tooltip({placement: 'bottom', title: 'Settings'})
+    .click(function(){
+         // set settings dialog data
+        var settingsDialog = {
+            data: {
+                content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+                header: "Settings",
+                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
+                xButton: "×",
+                id: "settingsDialog",
+                iconClass: "icon-cog"
+            },
+            selector: "div#dialogPlaceholder"
+        };
+
+        // show settings dialog
+        utils.showDialog(settingsDialog, function() {}, {} );
     });
-    $("a#nav-contact").tooltip({
-        placement: 'bottom',
-        title: 'Contact Us'
+
+    $("a#nav-help").tooltip({placement: 'bottom', title: 'Help'}).click(function(){
+        // set help dialog data
+        var helpDialog = {
+            data: {
+                content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+                header: "Help",
+                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> ',
+                xButton: "×",
+                id: "helpDialog",
+                iconClass: "icon-question-sign"
+            },
+            selector: "div#dialogPlaceholder"
+        };
+
+        // show settings dialog
+        utils.showDialog(helpDialog, function() {}, {});
     });
-    $("a#nav-help").tooltip({
-        placement: 'bottom',
-        title: 'Help'
-    });
+
+    $("a#nav-contact").tooltip({placement: 'bottom', title: 'Contact Us'});
+
 });
 
 // build file list view
@@ -117,12 +143,4 @@ function browse(path) {
             privateCloud.ls(currentDir, listFiles);
         }
     );
-}
-
-// validates file/dir name
-function isValid(fname) {
-    var rg1 = /^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
-    var rg2 = /^\./; // cannot start with dot (.) in windows
-    var rg3 = /^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names in windows
-    return fname && rg1.test(fname); /*&& !rg2.test(fname) && !rg3.test(fname)*/
 }

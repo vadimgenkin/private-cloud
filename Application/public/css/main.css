@@ -1,81 +1,8 @@
-ul#files {
-  margin: 0 1em;
-  font-size: 1.3em;
-}
-ul#files li {
-  list-style: none;
-  padding: .4em 0;
-  border-bottom: 1px solid #3a3f44;
-}
-ul#files li i {
-  padding: .4em;
-}
-ul#files li div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-ul#files li div .span4 {
-  padding-top: .3em;
-}
-ul#files li a.hover-option {
-  visibility: hidden;
-  margin-left: .7em;
-  color: inherit;
-  float: right;
-  text-decoration: none;
-  font-size: 1.3em;
-  padding-top: .25em;
-  -webkit-transition: color 0.5s;
-  -moz-transition: color 0.5s;
-  -o-transition: color 0.5s;
-  transition: color 0.5s;
-}
-ul#files li:hover {
-  background-image: -moz-linear-gradient(280deg, #272b30, #3a3f44);
-  background-image: -webkit-linear-gradient(280deg, #272b30, #3a3f44);
-  background-image: -o-linear-gradient(280deg, #272b30, #3a3f44);
-  background-image: linear-gradient(280deg, #272b30, #3a3f44);
-  cursor: pointer;
-}
-ul#files li:hover a.hover-option {
-  visibility: visible;
-}
-ul#files li:hover a.hover-option:hover {
-  color: #bbbfc2;
-  -moz-transform: scale(1.3);
-  -webkit-transform: scale(1.3);
-  -o-transform: scale(1.3);
-  -ms-transform: scale(1.3);
-  transform: scale(1.3);
-}
-ul#files li:hover a.hover-option:hover.icon-trash {
-  color: #bd362f;
-}
-ul#files li:hover a.hover-option:hover.icon-cloud {
-  color: #02a1dd;
-}
-ul#files li:hover a.hover-option.icon-folder-open,
-ul#files li:hover a.hover-option.icon-download {
-  color: #bbbfc2;
-}
-nav#nav-menu a.brand {
-  text-shadow: -1px -1px 4px #222222;
-}
-nav#nav-menu a.brand i.icon-cloud {
-  color: #02a1dd;
-}
-nav#nav-menu li a {
-  font-size: 1.3em;
-  -webkit-transition: color 0.5s;
-  -moz-transition: color 0.5s;
-  -o-transition: color 0.5s;
-  transition: color 0.5s;
-}
-nav#nav-menu li a:hover i {
-  -moz-transform: scale(1.3);
-  -webkit-transform: scale(1.3);
-  -o-transform: scale(1.3);
-  -ms-transform: scale(1.3);
-  transform: scale(1.3);
-}
+ul#files{margin:0 1em;font-size:1.3em;}ul#files li{list-style:none;padding:.4em 0;border-bottom:1px solid #3a3f44;}ul#files li i{padding:.4em;}
+ul#files li div{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}ul#files li div .span4{padding-top:.3em;}
+ul#files li a.hover-option{visibility:hidden;margin-left:.7em;color:inherit;float:right;text-decoration:none;font-size:1.3em;padding-top:.25em;-webkit-transition:color 0.5s;-moz-transition:color 0.5s;-o-transition:color 0.5s;transition:color 0.5s;}
+ul#files li:hover{background-image:-moz-linear-gradient(280deg, #272b30, #3a3f44);background-image:-webkit-linear-gradient(280deg, #272b30, #3a3f44);background-image:-o-linear-gradient(280deg, #272b30, #3a3f44);background-image:linear-gradient(280deg, #272b30, #3a3f44);cursor:pointer;}ul#files li:hover a.hover-option{visibility:visible;}ul#files li:hover a.hover-option:hover{color:#bbbfc2;-moz-transform:scale(1.3);-webkit-transform:scale(1.3);-o-transform:scale(1.3);-ms-transform:scale(1.3);transform:scale(1.3);}ul#files li:hover a.hover-option:hover.icon-trash{color:#bd362f;}
+ul#files li:hover a.hover-option:hover.icon-cloud{color:#02a1dd;}
+ul#files li:hover a.hover-option.icon-folder-open,ul#files li:hover a.hover-option.icon-download{color:#bbbfc2;}
+nav#nav-menu a.brand{text-shadow:-1px -1px 4px #222222;}nav#nav-menu a.brand i.icon-cloud{color:#02a1dd;}
+nav#nav-menu li a{font-size:1.3em;-webkit-transition:color 0.5s;-moz-transition:color 0.5s;-o-transition:color 0.5s;transition:color 0.5s;}nav#nav-menu li a:hover i{-moz-transform:scale(1.3);-webkit-transform:scale(1.3);-o-transform:scale(1.3);-ms-transform:scale(1.3);transform:scale(1.3);}
