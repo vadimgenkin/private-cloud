@@ -28,6 +28,8 @@ if(!(window.console && console.log)) {
         });
     };
 
+    // Registers external template as named one
+    // Depends on jsRender
     ns.registerTemplate = function(name) {
         var file = '../templates/' + name + '.html';
         $.when($.get(file)).done(function(tmplData) {

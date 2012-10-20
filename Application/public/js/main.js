@@ -97,16 +97,20 @@ $(function() {
 
 // build file list view
 function listFiles(files) {
+
+    $("ul#files").hide();
+
+    // Render back nav entry
+    $("ul#files").html($.render.backNavListItem());
+    $("ul#files li#nav-back").click( function() { browse(levelUp); });
+
+    // Render file list
     if(files.length > 0) {
-        // Render file list.
-        $("ul#files").hide().html($.render.fileListItem(files)).fadeIn();
+        $("ul#files").append($.render.fileListItem(files));
         $("ul#files li[data-type='dir']").click(function() {browse($(this).data("name")); });
     }
-    else {
-        // Render empty dir message.
-        $("ul#files").hide().html($.render.emptyDirListItem()).fadeIn();
-        $("ul#files li").click( function() { browse(levelUp); });
-    }
+
+    $("ul#files").fadeIn();
 }
 
 // changes dir and lists its content
@@ -136,7 +140,7 @@ function init(){
 // Loads and registers external templates
 function preCompileTemplates() {
     utils.registerTemplate('fileListItem');
-    utils.registerTemplate('emptyDirListItem');
+    utils.registerTemplate('backNavListItem');
     utils.registerTemplate('modalDialog');
 }
 
