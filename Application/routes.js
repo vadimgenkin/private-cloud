@@ -76,11 +76,11 @@ exports.delete = function(req,res){
 
 //create new directory
 exports.createDir = function(req,res){
-	fileserver.createDir(req.body.path, function(status){
-		res.send(status);
+	fileserver.createDir(req.body.path, function(err){
+		if(err) res.send({ error : err.message });
+		else res.send('');
 	});
 }
 
 exports.httpDownload = function(req,res){
-
 }

@@ -15,7 +15,10 @@ var sharedPaths = [ 'c:/temp', 'e:/Vadim' ];
 var customErrorMessages = {
 	pathNotFound : "Path doesn't exist",
 	pathNotDefined : "Path was not specified",
-	driveNotDefined : "Drive was not specified"
+	pathIsNotDefined : "Path is not defined",
+	driveNotDefined : "Drive was not specified",
+	directoryDoesNotExist : "Directory doesn't exist",
+	invalidPath : "Invalid Path"
 }
 
 var readSharedPathsFromArgs = function(){
@@ -111,7 +114,7 @@ exports.stat = function (p, callback){
 		});
 	}
 	else{
-		console.log(new Error("Path doesn't exist"));
+		console.log(new Error(pathNotFound));
 		return callback(err, null);
 	}
 }
@@ -126,7 +129,7 @@ exports.ls = function(p, callback){
 	}
 	else{
 		if(!fs.existsSync(p)){
-			var err = new Error("Path not found");
+			var err = new Error(pathNotFound);
 			console.log(err);
 			return callback(err, []);
 		}
@@ -196,7 +199,7 @@ exports.chdir = function(p, callback){
 		}
 	}
 	else{//directory doesn't exist
-		return callback(new Error("Directory doesn't exist"));
+		return callback(new Error(directoryDoesNotExist));
 	}
 	return callback(null);
 }
@@ -214,7 +217,7 @@ exports.diskspace = function(drive, callback){
 		});
 	}
 	else{
-		console.log(new Error("Drive was not specified"));
+		console.log(new Error(driveNotDefined));
 		return callback(err, null);
 	}
 }
@@ -275,7 +278,7 @@ exports.delete = function(p, callback){
 		});
 	}
 	else{
-		return callback(new Error("Path doesn't exist"));
+		return callback(new Error(pathNotFound));
 	}
 }
 
@@ -283,18 +286,16 @@ exports.delete = function(p, callback){
 exports.createDir = function(p, callback){
 	if(p){
 		fs.mkdir(p, function(err){
-			if(err){//
+			if(err){
 				console.log(err);	
-				return callback({status:"fail"});
 			}
-			else{
-				return callback({status:"success"});
-			}
+			return callback(err);
 		});
 	}
 	else{//path is not defined
-		console.log(new Error('Path is not defined'));
-		return callback({status:"fail"});
+		var err = new Error(pathIsNotDefined);
+		console.log(err);
+		return callback(err);
 	}
 }
 
