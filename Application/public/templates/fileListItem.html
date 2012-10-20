@@ -1,74 +1,24 @@
 <li class="row-fluid" data-name="{{:name}}" data-type="{{:type}}">
         {{if type == "dir"}}
-        <div class="span8"> <i class="icon-folder-close"></i>
-                <span>{{:name.split('/').pop()}}</span>
-        </div>
-        <div  class="span4">
-                <a  href='#' class='icon-trash hover-option' title='Delete'/>
-                <a  href='#' class='icon-folder-open hover-option' title='Browse'/>
-        </div>
+                <div class="span8"><i class="icon-folder-close"></i><span>{{:name}}</span></div>
+                <div  class="span4">{{links "delete browse" /}}</div>
         {{else type == "inode/symlink"}}
-        <div class="span8"> <i class="icon-external-link"></i>
-                <span>{{:name.split('/').pop()}}</span>
-        </div>
-        <div class="span4">
-                <a  href='#deleteFileDialog' class='icon-trash hover-option' data-toggle="modal" title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-        </div>
+                <div class="span8"><i class="icon-external-link"></i><span>{{:name}}</span></div>
+                <div class="span4">{{links "delete share download" /}}</div>
         {{else type.indexOf("video/") != -1}}
-        <div class="span8">
-                <i class="icon-film"></i>
-                <span>{{:name.split('/').pop()}}</span>
-        </div>
-        <div class="span4">
-                <a  href='#deleteFileDialog' class='icon-trash hover-option' data-toggle="modal" title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-play hover-option' title='Stream'/>
-        </div>
+                <div class="span8"><i class="icon-film"></i><span>{{:name}}</span></div>
+                <div class="span4">{{links "delete share download stream" /}}</div>
         {{else type.indexOf("audio/") != -1}}
-        <div class="span8">
-                <i class="icon-volume-up"></i>
-                <span>{{:name.split('/').pop()}}</span>
-        </div>
-        <div class="span4">
-                <a  href='#deleteFileDialog' class='icon-trash hover-option' data-toggle="modal" title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-music hover-option' title='Stream'/>
-        </div>
+                <div class="span8"><i class="icon-volume-up"></i><span>{{:name}}</span></div>
+                <div class="span4">{{links "delete share download stream" /}}</div>
         {{else type.indexOf("image/") != -1}}
-        <div class="span8">
-                <i class="icon-picture"></i>
-                <span>{{:name.split('/').pop()}}</span>
-        </div>
-        <div class="span4">
-                <a  href='#deleteFileDialog' class='icon-trash hover-option' data-toggle="modal" title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-eye-open hover-option' title='View'/>
-        </div>
+                <div class="span8"><i class="icon-picture"></i><span>{{:name}}</span></div>
+                <div class="span4">{{links "delete share download view" /}}</div>
         {{else type.indexOf("text/") != -1}}
-        <div class="span8">
-                <i class="icon-edit"></i>
-                <span>{{:name.split('/').pop()}}</span>
-        </div>
-        <div class="span4">
-                <a  href='#deleteFileDialog' class='icon-trash hover-option' data-toggle="modal" title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-                <a  href='#' class='icon-edit hover-option' title='Edit'/>
-        </div>
+                <div class="span8"><i class="icon-edit"></i><span>{{:name}}</span></div>
+                <div class="span4">{{links "delete share download edit" /}}</div>
         {{else}}
-        <div class="span8">
-                <i class="icon-file"></i>
-                <span>{{:name.split('/').pop()}}</span>
-        </div>
-        <div class="span4">
-                <a  href='#deleteFileDialog' class='icon-trash hover-option' data-toggle="modal" title='Delete'/>
-                <a  href='#' class='icon-cloud hover-option' title='Share'/>
-                <a  href='#' class='icon-download hover-option' title='Download'/>
-        </div>
+                <div class="span8"><i class="icon-file"></i><span>{{:name}}</span></div>
+                <div class="span4">{{links "delete share download" /}}</div>
         {{/if}}
 </li>

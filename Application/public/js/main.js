@@ -4,9 +4,7 @@ var currentDir = ".";
 
 $(function() {
 
-    $(document).ajaxError(function(event, xhr, settings, error){
-        utils.showNotification({message : "Connectivity problem detected."});
-    });
+    init();
 
     // start @ home
     browse(home);
@@ -30,8 +28,7 @@ $(function() {
                 xButton: "×",
                 id: "newFolderDialog",
                 iconClass: "icon-folder-close"
-            },
-            selector: "div#dialogPlaceholder"
+            }
         };
 
         // show new folder dialog
@@ -70,8 +67,7 @@ $(function() {
                 xButton: "×",
                 id: "settingsDialog",
                 iconClass: "icon-cog"
-            },
-            selector: "div#dialogPlaceholder"
+            }
         };
 
         // show settings dialog
@@ -88,11 +84,10 @@ $(function() {
                 xButton: "×",
                 id: "helpDialog",
                 iconClass: "icon-question-sign"
-            },
-            selector: "div#dialogPlaceholder"
+            }
         };
 
-        // show settings dialog
+        // show help dialog
         utils.showDialog(helpDialog, function() {}, {});
     });
 
@@ -103,35 +98,14 @@ $(function() {
 // build file list view
 function listFiles(files) {
     if(files.length > 0) {
-
         // Render file list.
-        $("ul#files").hide();
-        utils.renderTemplate(
-            {
-                name: 'fileListItem',
-                data: files,
-                selector: "ul#files"
-            },
-            function() {
-                $("ul#files li[data-type='dir']").click(function() {
-                    browse($(this).data("name"));
-                });
-            }
-        );
-        $("ul#files").fadeIn();
-
-    } else {
-
+        $("ul#files").hide().html($.render.fileListItem(files)).fadeIn();
+        $("ul#files li[data-type='dir']").click(function() {browse($(this).data("name")); });
+    }
+    else {
         // Render empty dir message.
-        $("ul#files").hide();
-        utils.renderTemplate({name: 'emptyDirListItem', data: null, selector: "ul#files"},
-        function() {
-            // go back on click
-            $("ul#files li").click(function() {
-                browse(levelUp);
-            });
-            $("ul#files").fadeIn();
-        });
+        $("ul#files").hide().html($.render.emptyDirListItem()).fadeIn();
+        $("ul#files li").click( function() { browse(levelUp); });
     }
 }
 
@@ -143,4 +117,62 @@ function browse(path) {
             privateCloud.ls(currentDir, listFiles);
         }
     );
+}
+
+function init(){
+    // Show notification on ajax error
+    $(document).ajaxError(function(event, xhr, settings, error){
+            utils.showNotification({message : "Connectivity problem detected."});
+        });
+
+    // Load and register external templates
+    preCompileTemplates();
+
+    // Define custom tags for templating
+    defineCustomTags();
+
+}
+
+// Loads and registers external templates
+function preCompileTemplates() {
+    utils.registerTemplate('fileListItem');
+    utils.registerTemplate('emptyDirListItem');
+    utils.registerTemplate('modalDialog');
+}
+
+// Defines custom tags for templating
+function defineCustomTags() {
+    $.views.tags({
+
+        // listview item links
+        links : function(types){
+
+            var links = [];
+            if(types.indexOf("delete") !== -1) {
+                links.push({title : "Delete", iconClass : "icon-trash"});
+            }
+             if(types.indexOf("share") !== -1) {
+                links.push({title : "Share", iconClass : "icon-cloud"});
+            }
+            if(types.indexOf("stream") !== -1) {
+                links.push({title : "Stream", iconClass : "icon-play"});
+            }
+            if(types.indexOf("view") !== -1) {
+                links.push({title : "View", iconClass : "icon-eye-open"});
+            }
+            if(types.indexOf("edit") !== -1) {
+                links.push({title : "Edit", iconClass : "icon-edit"});
+            }
+            if(types.indexOf("download") !== -1) {
+                links.push({title : "Download", iconClass : "icon-download"});
+            }
+            if(types.indexOf("browse") !== -1) {
+                links.push({title : "Browse", iconClass : "icon-folder-open"});
+            }
+
+            $.templates('hoverLinks', "<a  href='#' class='{{:iconClass}} hover-option' title='{{:title}}'/>");
+
+            return $.render.hoverLinks(links);
+        }
+    });
 }

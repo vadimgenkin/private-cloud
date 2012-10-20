@@ -28,34 +28,40 @@ if(!(window.console && console.log)) {
         });
     };
 
+    ns.registerTemplate = function(name) {
+        var file = '../templates/' + name + '.html';
+        $.when($.get(file)).done(function(tmplData) {
+           $.templates(name, {markup : tmplData });
+        });
+    };
+
     // Renders modal dialog
     // dialog = {data: {content, iconClass, header, buttons, xButton, id}, selector}, eventHandlers = {show, shown, hide, hidden}
     // Depends on jsRender
     ns.showDialog = function(dialog, callback, eventHandlers) {
 
-        var file = '../templates/modalDialog.html';
+        var defaultDialog = {selector : "div#dialogPlaceholder"};
 
-        $.when($.get(file)).done(function(tmplData) {
-            $.templates({tmpl: tmplData });
-            $(dialog.selector).html($.render.tmpl(dialog.data));
+        $.extend(defaultDialog, dialog);
 
-            var dialogBox = $("#" + dialog.data.id);
+       $(defaultDialog.selector).html($.render.modalDialog(defaultDialog.data));
 
-            // submit on enter
-            dialogBox.keyup(function(e){
-                if(e.keyCode === 13){
-                    $(".btn-primary").click();
-                }
-            });
+        var dialogBox = $("#" + defaultDialog.data.id);
 
-            // modal event handlers registration
-            if(eventHandlers.hidden) dialogBox.on('hidden', function(){eventHandlers.hidden();});
-            if(eventHandlers.hide) dialogBox.on('hide', function(){eventHandlers.hide();});
-            if(eventHandlers.shown) dialogBox.on('shown', function(){eventHandlers.shown();});
-            if(eventHandlers.show) dialogBox.on('hidden', function(){eventHandlers.show();});
-            dialogBox.modal();
-            callback();
+        // submit on enter
+        dialogBox.keyup(function(e){
+            if(e.keyCode === 13){
+                $(".btn-primary").click();
+            }
         });
+
+        // modal event handlers registration
+        if(eventHandlers.hidden) dialogBox.on('hidden', function(){eventHandlers.hidden();});
+        if(eventHandlers.hide) dialogBox.on('hide', function(){eventHandlers.hide();});
+        if(eventHandlers.shown) dialogBox.on('shown', function(){eventHandlers.shown();});
+        if(eventHandlers.show) dialogBox.on('hidden', function(){eventHandlers.show();});
+        dialogBox.modal();
+        callback();
     };
 
     // Displays notification
