@@ -21,9 +21,9 @@
 
                 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-                <link rel="stylesheet" href="css/static.css"/>
+                <link rel="stylesheet" href="css/static.min.css"/>
+                <link rel="stylesheet" href="css/navbar.css"/>
                 <link rel="stylesheet" href="fonts/font-awesome.css"/>
-                <link rel="stylesheet" href="css/bootstrap-notify.css">
                 <link rel="stylesheet" href="css/main.css">
 
 
@@ -42,28 +42,35 @@
                 <nav id="nav-menu">
                                 <div class="navbar navbar-fixed-top">
                                     <div class="navbar-inner">
-                                        <a class="brand" href="http://www.piBox.com">&nbsp;<i class="icon-cloud"></i> &#960;Box</a>
-                                        <ul class="nav" id="navigation">
-                                            <li><a href="#" id="nav-home"><i class="icon-home"></i></a></li>
-                                            <li><a href="#" id="nav-refresh"> <i class="icon-refresh"></i></a></li>
-                                            <li><a href="#" id="nav-up"><i class="icon-arrow-up"></i></a></li>
-                                            </ul>
-                                            <ul class="nav" id="filesystem">
-                                            <li><a href="#newFolderDialog" id="nav-new-folder">+<i class="icon-folder-close"></i></a></li>
-                                            <li><a href="#" id="nav-upload">+<i class="icon-file"></i></a></li>
-                                            </ul>
-                                            <ul class="nav pull-right" id="misc">
-                                            <li class="divider-vertical"></li>
-                                            <li><a href="#" id="nav-help"><i class="icon-question-sign"></i></a></li>
-                                            <li><a href="mailto:alxgreen@gmail.com" id="nav-contact"><i class="icon-envelope-alt"></i></a></li>
-                                            <li><a href="#" id="nav-settings"><i class="icon-cog"></i></a></li>
-                                            </ul>
+                                        <div id="container">
+                                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse" title="Menu">
+                                                <i class="icon-chevron-down"></i>
+                                          </a>
+                                            <a class="brand" href="http://www.piBox.com">&nbsp;<i class="icon-cloud"></i> &#960;Box</a>
+                                            <div class="nav-collapse">
+                                                <ul class="nav" id="navigation">
+                                                    <li><a href="#" id="nav-home"><i class="icon-home"></i></a></li>
+                                                    <li><a href="#" id="nav-refresh"> <i class="icon-refresh"></i></a></li>
+                                                    <li><a href="#" id="nav-up"><i class="icon-arrow-up"></i></a></li>
+                                                    </ul>
+                                                    <ul class="nav" id="filesystem">
+                                                    <li><a href="#newFolderDialog" id="nav-new-folder">+<i class="icon-folder-close"></i></a></li>
+                                                    <li><a href="#" id="nav-upload">+<i class="icon-file"></i></a></li>
+                                                    </ul>
+                                                    <ul class="nav pull-right" id="misc">
+                                                    <li class="divider-vertical"></li>
+                                                    <li><a href="#" id="nav-help"><i class="icon-question-sign"></i></a></li>
+                                                    <li><a href="mailto:alxgreen@gmail.com" id="nav-contact"><i class="icon-envelope-alt"></i></a></li>
+                                                    <li><a href="#" id="nav-settings"><i class="icon-cog"></i></a></li>
+                                                    </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                         </nav>
 
                 <div class="row-fluid">
-                    <div class="span12w">
+                    <div class="span12">
                         <div id="content">
                             <ul id="files"></ul>
                         </div>

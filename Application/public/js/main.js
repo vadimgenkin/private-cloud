@@ -158,6 +158,9 @@ function defineCustomTags() {
              if(types.indexOf("share") !== -1) {
                 links.push({title : "Share", iconClass : "icon-cloud"});
             }
+            if(types.indexOf("download") !== -1) {
+                links.push({title : "Download", iconClass : "icon-download"});
+            }
             if(types.indexOf("stream") !== -1) {
                 links.push({title : "Stream", iconClass : "icon-play"});
             }
@@ -166,9 +169,6 @@ function defineCustomTags() {
             }
             if(types.indexOf("edit") !== -1) {
                 links.push({title : "Edit", iconClass : "icon-edit"});
-            }
-            if(types.indexOf("download") !== -1) {
-                links.push({title : "Download", iconClass : "icon-download"});
             }
             if(types.indexOf("browse") !== -1) {
                 links.push({title : "Browse", iconClass : "icon-folder-open"});
