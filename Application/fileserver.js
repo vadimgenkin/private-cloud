@@ -33,19 +33,19 @@ var getNodeType = function(nodePath, callback){
 		else{
 			var nodeType;
 			if(stats.isFile()){
-				mime(nodePath, function(err, type){
-					if(err){
-						console.log(err.message);
-						return callback(err, null);
-					}
-					else{
-						nodeType = type;
-						return callback(null, nodeType);
-					}
-				});
+				// mime(nodePath, function(err, type){
+				// 	if(err){
+				// 		console.log(err.message);
+				// 		return callback(err, null);
+				// 	}
+				// 	else{
+				// 		nodeType = type;
+				// 		return callback(null, nodeType);
+				// 	}
+				// });
 				
 
-				//return callback(null, '');
+				return callback(null, 'file');
 				//nodeType = mime.lookup(nodePath);
 			}
 			else if(stats.isDirectory()){
