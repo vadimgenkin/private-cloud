@@ -1,6 +1,7 @@
 
 var fs = require('fs');
-var mime = require('mime-magic');//require('mime');
+var mime_magic = require('mime-magic');//require('mime');
+var mime = require("mime");
 
 var util = require('util');
 var resumable = require('./resumable-upload.js')(__dirname + '/tmp/');
@@ -45,8 +46,9 @@ var getNodeType = function(nodePath, callback){
 				// });
 				
 
-				return callback(null, 'file');
-				//nodeType = mime.lookup(nodePath);
+				//return callback(null, 'file');
+				nodeType = mime.lookup(nodePath);
+				return callback(null, nodeType);
 			}
 			else if(stats.isDirectory()){
 				nodeType = 'dir';
