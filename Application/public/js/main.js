@@ -19,20 +19,8 @@ $(function() {
     $("a#nav-upload").tooltip({placement: 'bottom', title: 'Upload File'});
 
     $("a#nav-new-folder").tooltip({placement: 'bottom', title: 'New Folder'}).click(function() {
-        // set new folder dialog data
-        var newFolderDialog = {
-            data: {
-                content: '<input type="text" placeholder="Enter folder name" autofocus="autofocus" id="newFolderName"/>',
-                header: "Create New Folder",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
-                xButton: "×",
-                id: "newFolderDialog",
-                iconClass: "icon-folder-close"
-            }
-        };
-
         // show new folder dialog
-        utils.showDialog(newFolderDialog, function() {
+        utils.showDialog(dialogs.newFolderDialog(), function() {
 
             var input = $("input#newFolderName");
             var doneButton = $("button#btnCreateNewFolder");
@@ -58,37 +46,13 @@ $(function() {
 
     $("a#nav-settings").tooltip({placement: 'bottom', title: 'Settings'})
     .click(function(){
-         // set settings dialog data
-        var settingsDialog = {
-            data: {
-                content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
-                header: "Settings",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
-                xButton: "×",
-                id: "settingsDialog",
-                iconClass: "icon-cog"
-            }
-        };
-
         // show settings dialog
-        utils.showDialog(settingsDialog, function() {}, {} );
+        utils.showDialog(dialogs.settingsDialog(), function() {}, {} );
     });
 
     $("a#nav-help").tooltip({placement: 'bottom', title: 'Help'}).click(function(){
-        // set help dialog data
-        var helpDialog = {
-            data: {
-                content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
-                header: "Help",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> ',
-                xButton: "×",
-                id: "helpDialog",
-                iconClass: "icon-question-sign"
-            }
-        };
-
         // show help dialog
-        utils.showDialog(helpDialog, function() {}, {});
+        utils.showDialog(dialogs.helpDialog(), function() {}, {});
     });
 
     $("a#nav-contact").tooltip({placement: 'bottom', title: 'Contact Us'});
@@ -107,7 +71,19 @@ function listFiles(files) {
     // Render file list
     if(files.length > 0) {
         $("ul#files").append($.render.fileListItem(files));
-        $("ul#files li[data-type='dir']").click(function() {browse($(this).data("name")); });
+        $("ul#files li[data-type='dir']").click(function(event) {
+            event.stopPropagation();
+            browse($(this).data("name"));
+        });
+        $("ul#files li a.icon-folder-open").click(function(event) {
+            event.stopPropagation();
+            browse($(this).closest("li").data("name"));
+        });
+        $("ul#files li a.icon-trash").click(function(event) {
+            event.stopPropagation();
+            deleteCarefully($(this).closest("li").data("name"), $(this).closest("li").data("type"));
+        });
+
     }
 
     $("ul#files").fadeIn();
@@ -134,7 +110,6 @@ function init(){
 
     // Define custom tags for templating
     defineCustomTags();
-
 }
 
 // Loads and registers external templates
@@ -159,7 +134,7 @@ function defineCustomTags() {
                 links.push({title : "Share", iconClass : "icon-cloud"});
             }
             if(types.indexOf("download") !== -1) {
-                links.push({title : "Download", iconClass : "icon-download"});
+                links.push({title : "Download", iconClass : "icon-download default-action"});
             }
             if(types.indexOf("stream") !== -1) {
                 links.push({title : "Stream", iconClass : "icon-play"});
@@ -171,7 +146,7 @@ function defineCustomTags() {
                 links.push({title : "Edit", iconClass : "icon-edit"});
             }
             if(types.indexOf("browse") !== -1) {
-                links.push({title : "Browse", iconClass : "icon-folder-open"});
+                links.push({title : "Browse", iconClass : "icon-folder-open default-action"});
             }
 
             $.templates('hoverLinks', "<a  href='#' class='{{:iconClass}} hover-option' title='{{:title}}'/>");
@@ -179,4 +154,28 @@ function defineCustomTags() {
             return $.render.hoverLinks(links);
         }
     });
+}
+
+// Shows delete dialog and deletes file/folder
+function deleteCarefully(path, type) {
+
+    var entryType  = (type === "dir" ? "folder" : "file") ;
+
+    // show new folder dialog
+    utils.showDialog(dialogs.deleteDialog(path, entryType), function() {
+
+        var deleteButton = $("button#btnDelete");
+
+        deleteButton.click(function() {
+
+            privateCloud.rm(path,
+                // success
+                function() {
+                    $("div#deleteDialog").modal("hide");
+                    privateCloud.ls(currentDir, listFiles);
+                    utils.showNotification({ message : utils.titlize(entryType) + " '" + path +"' deleted successfully.", type : "success"});
+                }
+            );
+        });
+    }, {/*handlers*/});
 }

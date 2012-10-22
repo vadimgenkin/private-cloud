@@ -45,16 +45,13 @@
     };
 
     // Delete file
-    ns.rm = function(path, success, error) {
+    ns.rm = function(path, success) {
         apiCall({
             url: '/delete',
             requestMethod: 'DELETE',
             data: { path: path },
             success: function(result) {
                 success(result);
-            },
-            error: function(result) {
-                error(result);
             }
         });
     };
@@ -99,4 +96,33 @@
             }
         });
     };
+
+    // Uploads file to server
+    ns.upload = function(path, success) {
+        apiCall({
+            requestMethod : "post",
+            url : "/upload",
+            data : {path : path},
+            success : function(result) {
+                success(result);
+            },
+            error : function(e) {
+                error(e);
+            }
+        });
+    };
+
+     // Downloads file from server
+    ns.download = function(path, success) {
+         apiCall({
+            requestMethod : "post",
+            url : "/download",
+            data : {path : path},
+            success : function(result) {
+                success(result);
+            }
+        });
+    };
+
+
 })(window.privateCloud = window.privateCloud || {}, jQuery);
