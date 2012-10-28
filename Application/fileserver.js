@@ -91,8 +91,13 @@ var getArrayOfNodes = function(nodePaths, callback){
 			fileCounter++;
 			if(fileCounter == nodePaths.length){
 				getMimeByContent(nodeFilesWithoutExtension, function(types){
-					for(var i = 0 ;i<types.length; i++){
-						nodeFiles.push({type : types[i], name : nodeFilesWithoutExtension[i]});
+					for(var i = 0 ;i<nodeFilesWithoutExtension.length; i++){
+						if(types && types[i]){
+							nodeFiles.push({type : types[i], name : nodeFilesWithoutExtension[i]});
+						}
+						else{
+							nodeFiles.push({type:'', name : nodeFilesWithoutExtension[i]});
+						}
 					}
 					//clear array
 					nodeFilesWithoutExtension = [];

@@ -12,7 +12,7 @@ var customErrMsg = {
 
 exports.pathNotFoundError = function(p){
 	if(!fs.existsSync(p)){
-		error = new Error(customErrMsg.pathNotFound);
+		error = new Error(customErrMsg.pathNotFound + ': ' + p);
 		console.log(error);
 		return error;
 	}
