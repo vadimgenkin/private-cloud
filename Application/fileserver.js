@@ -64,6 +64,10 @@ var getNodeType = function(nodePath, callback){
 				nodeType = 'dir';
 				return callback(null, nodeType);
 			}
+			else if(stats.isSymbolicLink()){
+				nodeType = 'dir';
+			}
+			else return callback(null, null);
 		}
 	});
 }
@@ -84,6 +88,9 @@ var getArrayOfNodes = function(nodePaths, callback){
 					nodeDirs.push(node);
 				else if (nodeType == 'file_no_extension'){
 					nodeFilesWithoutExtension.push(nodePath);
+				}
+				else if (nodeType == null){
+					
 				}
 				else
 					nodeFiles.push(node);
@@ -166,9 +173,11 @@ exports.ls = function(p, callback){
 			return callback(err.message, []);
 		}
 		fs.readdir(p, function(err,files){
+			if(err) return callback(err,[]);
 			//empty dir
 			if(files.length < 1) return callback(null, []);
 			addPathToFilenames(p, files, function(filePaths){
+				//if(!filePaths) return callback(null, []);
 				getArrayOfNodes(filePaths, function(err,nodes){
 					if(err) console.log(err);
 					return callback(null, nodes);
