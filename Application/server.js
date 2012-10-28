@@ -4,6 +4,8 @@ var fileserver = require('./fileserver');
 var fs = require('fs');
 var routes = require("./routes");
 
+var uploadServer = require("./uploadServer");
+
 var app = express();
 var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
 
@@ -51,4 +53,7 @@ app.post('/mkdir', routes.createDir);
 app.post('/httpDownload', fileserver.httpDownload);
 
 app.listen(3001);
-console.log('Listening on port 3001');
+console.log('Server listening on port 3001');
+
+uploadServer.start(8888);
+console.log('Upload Server listening on port 8888');

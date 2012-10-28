@@ -24,6 +24,25 @@ var readSharedPathsFromArgs = function(){
 	}	
 }();
 
+var getMimeByContent = function(arrayOfPaths, callback){
+	if(arrayOfPaths.length == 0) return callback([]);
+
+	mime_magic(arrayOfPaths, function (err, types) {
+	    if (err) {
+	        console.log(err);
+	        return callback(types);
+	        // ERROR: cannot open `/path/to/foo.pdf' (No such file or directory)
+	        // ERROR: cannot open `/path/to/foo.txt' (No such file or directory)
+	    } else {
+	        return callback(types);
+	        // ['application/pdf', 'text/plain']
+	    }
+	});
+}
+
+var getMimeByExtension = function(path){
+	return mime.lookup(path);
+}
 
 var getNodeType = function(nodePath, callback){
 	fs.stat(nodePath, function(err, stats){
@@ -34,20 +53,11 @@ var getNodeType = function(nodePath, callback){
 		else{
 			var nodeType;
 			if(stats.isFile()){
-				// mime(nodePath, function(err, type){
-				// 	if(err){
-				// 		console.log(err.message);
-				// 		return callback(err, null);
-				// 	}
-				// 	else{
-				// 		nodeType = type;
-				// 		return callback(null, nodeType);
-				// 	}
-				// });
+				if(path.extname(nodePath) == '')
+					nodeType = 'file_no_extension';
+				else
+					nodeType = getMimeByExtension(nodePath);
 				
-
-				//return callback(null, 'file');
-				nodeType = mime.lookup(nodePath);
 				return callback(null, nodeType);
 			}
 			else if(stats.isDirectory()){
@@ -64,6 +74,7 @@ var getArrayOfNodes = function(nodePaths, callback){
 	var nodes = [];
 	var nodeDirs = [];
 	var nodeFiles = [];
+	var nodeFilesWithoutExtension = [];
 	nodePaths.forEach(function(nodePath){
 		getNodeType(nodePath, function(err,nodeType){
 			if(err) console.log(err);
@@ -71,20 +82,29 @@ var getArrayOfNodes = function(nodePaths, callback){
 				var node = { type : nodeType, name : path.basename(nodePath) };
 				if(nodeType == 'dir')
 					nodeDirs.push(node);
-				else 
+				else if (nodeType == 'file_no_extension'){
+					nodeFilesWithoutExtension.push(nodePath);
+				}
+				else
 					nodeFiles.push(node);
 			}
 			fileCounter++;
 			if(fileCounter == nodePaths.length){
-				
-				//sort dirs and files alphabetically
-				sortNodesAlphabetically(nodeDirs);
-				sortNodesAlphabetically(nodeFiles);
+				getMimeByContent(nodeFilesWithoutExtension, function(types){
+					for(var i = 0 ;i<types.length; i++){
+						nodeFiles.push({type : types[i], name : nodeFilesWithoutExtension[i]});
+					}
+					//clear array
+					nodeFilesWithoutExtension = [];
+					//sort dirs and files alphabetically
+					sortNodesAlphabetically(nodeDirs);
+					sortNodesAlphabetically(nodeFiles);
 
-				//concatenate sorted dirs and files (dirs first)
-				nodes = nodeDirs.concat(nodeFiles);
+					//concatenate sorted dirs and files (dirs first)
+					nodes = nodeDirs.concat(nodeFiles);
 
-				return callback(null,nodes);				
+					return callback(null,nodes);				
+				});
 			}
 		});
 	});
@@ -222,7 +242,8 @@ exports.diskspace = function(drive, callback){
 //download a file
 exports.download = function (req,res){
 	var p = req.body.path;
-	res.sendfile(p);
+	res.attachment(p);
+	res.end();
 }
 
 var deleteFile = function(p, callback){
