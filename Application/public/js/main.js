@@ -1,4 +1,4 @@
-var home = "d:\\downloads"; //TODO: home location -- to config file
+var home = "/home/lxgreen"; //TODO: home location -- to config file
 var levelUp = "..";
 var currentDir = ".";
 
@@ -118,8 +118,10 @@ function initFileUpload() {
     //TODO: get options from config
     $("#fileUploader").fileupload({
 
-       // //1MiB chunks
-       //  maxChunkSize : 1024*1024,
+       //1MiB chunks
+        maxChunkSize : 10*1024*1024,
+
+       // maxFileSize : 1000000000,
 
         //upload on add
         autoUpload : true,
@@ -131,7 +133,10 @@ function initFileUpload() {
 
             var that = $(this).data('fileupload'), options = that.options, files = data.files;
 
+             $("ul#files li:first").remove();
+             $("ul#files").prepend($.render.uploadOverallListItem());
             // Set context to listView upload items
+
             data.context = $($.render.uploadListItem(files)).insertAfter("#nav-back");
 
             // validate + submit (according to options)
@@ -140,8 +145,34 @@ function initFileUpload() {
                     data.submit();
             }
         },
+        progress: function(e,data) {
+            if (data.context) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    data.context.find('.upload-progress-bar')
+                        .attr('aria-valuenow', progress)
+                        .css('width', progress + '%');
+            }
+        },
+        progressall: function(e,data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#nav-back .upload-progress-bar')
+                .attr('aria-valuenow', progress)
+                .css('width', progress + '%');
+        },
 
+        // remove uploaded, relist files on complete
+        done: function(e,data){
+             if (data.context) {
+                data.context.remove();
 
+                if( $('.uploadListItem').length === 1) {
+                    privateCloud.ls(currentDir, listFiles);
+                }
+             }
+        },
+        fail: function(e,data) {
+            utils.showNotification({message : "Upload aborted"});
+        }
     });
 }
 
@@ -151,6 +182,7 @@ function preCompileTemplates() {
     utils.registerTemplate('backNavListItem');
     utils.registerTemplate('uploadListItem');
     utils.registerTemplate('modalDialog');
+    utils.registerTemplate('uploadOverallListItem');
 }
 
 // Defines custom tags for templating
@@ -183,9 +215,9 @@ function defineCustomTags() {
                 links.push({title : "Browse", iconClass : "icon-folder-open default-action"});
             }
             if(types.indexOf("upload") !== -1) {
-                links.push({title : "Delete upload", iconClass : "upload icon-trash", customStyle : "visibility : visible;"});
-                links.push({title : "Cancel upload", iconClass : "upload icon-stop", customStyle : "visibility : visible;"});
-                links.push({title : "Start upload", iconClass : "upload icon-play", customStyle : "visibility : visible;"});
+                links.push({title : "Delete upload", iconClass : "upload icon-trash delete", customStyle : "visibility : visible;"});
+                links.push({title : "Cancel upload", iconClass : "upload icon-stop stop", customStyle : "visibility : visible;"});
+                links.push({title : "Start upload", iconClass : "upload icon-play start", customStyle : "visibility : visible;"});
             }
 
             $.templates('hoverLinks', "<a  href='#' class='{{:iconClass}} hover-option' title='{{:title}}' style='{{:customStyle}}'/>");
