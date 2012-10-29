@@ -1,3 +1,4 @@
+"use strict";
 // Avoid `console` errors in browsers that lack a console.
 if(!(window.console && console.log)) {
     (function() {
@@ -13,6 +14,9 @@ if(!(window.console && console.log)) {
 
 // Place any jQuery/helper plugins in here.
 (function(ns, $, undefined) {
+
+    ns.dirDelimiter = navigator.platform.toLowerCase().indexOf("windows") !== -1 ?
+        "\\" : "/";
 
     // Renders external template
     // item = {data, name, selector}
@@ -82,6 +86,17 @@ if(!(window.console && console.log)) {
     ns.titlize = function(stringToTitle) {
         return stringToTitle.charAt(0).toUpperCase() + stringToTitle.substr(1).toLowerCase();
     };
+
+    ns.validateFiles = function(files) {
+            var that = this,
+            valid = !!files.length;
+            $.each(files, function(index, file) {
+                if (file.error) {
+                    valid = false;
+                }
+            });
+            return valid;
+        };
 
 })(window.utils = window.utils || {}, jQuery);
 

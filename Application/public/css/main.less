@@ -1,6 +1,10 @@
 
 @import "variables.less";
 
+body {
+    background-image: url("../img/ZenBG.png");
+}
+
 
 .hover-scale (@scale: 1.3)
 {
@@ -11,7 +15,7 @@
     transform: scale(@scale);
 }
 
-.hover-gradient(@angle: 280deg, @startColor: @grayDarker, @endColor: @grayDark)
+.hover-gradient(@angle: 280deg, @startColor: rgba(39,43,48,0.2), @endColor: rgba(58, 63, 68, 0.4))
 {
     background-image: -moz-linear-gradient(@angle, @startColor, @endColor);
     background-image: -webkit-linear-gradient(@angle, @startColor, @endColor);
@@ -90,25 +94,94 @@ ul#files
                 }
             }
         }
-    }
-}
-nav#nav-menu a.brand
-{
-    text-shadow: -1px -1px 4px #222;
-    i.icon-cloud
-    {
-        color: @blue;
-    }
-}
-nav#nav-menu li a
-{
-    font-size: 1.3em;
-   .hover-transition;
-    &:hover
-    {
-        i
+
+        &.uploadListItem
         {
-            .hover-scale;
+            div.listItem-container
+            {
+                position: relative;
+
+                div.upload-progress-bar
+                {
+                    width: 1%;
+                    height:100%;
+                    position: absolute;
+
+                    background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
+                    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+                    background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+                    background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+                    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+
+                    -webkit-background-size: 40px 40px;
+                    -moz-background-size: 40px 40px;
+                    -o-background-size: 40px 40px;
+                     background-size: 40px 40px;
+
+                    -webkit-animation: progress-bar-stripes 2s linear infinite;
+                    -moz-animation: progress-bar-stripes 2s linear infinite;
+                    -ms-animation: progress-bar-stripes 2s linear infinite;
+                    -o-animation: progress-bar-stripes 2s linear infinite;
+                    animation: progress-bar-stripes 2s linear infinite;
+                }
+
+                div.upload-controls
+                {
+                    position: absolute;
+                    right: 0;
+                }
+            }
+        }
+    }
+}
+
+nav#nav-menu
+{
+    ul#uploadControls
+    {
+        visibility: hidden;
+    }
+
+    a.brand
+    {
+        text-shadow: -1px -1px 4px #222;
+        i.icon-cloud
+        {
+            color: @blue;
+        }
+    }
+
+    li a
+    {
+        font-size: 1.3em;
+       .hover-transition;
+        &:hover
+        {
+            i
+            {
+                .hover-scale;
+            }
+        }
+
+        &.fileinput-button
+        {
+            position: relative;
+            overflow: hidden;
+
+            input
+            {
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                margin: 0;
+                opacity: 0;
+                filter: alpha(opacity=0);
+                transform: translate(-300px, 0) scale(4);
+                padding: 5px;
+                direction: ltr;
+                cursor: pointer;
+            }
         }
     }
 }

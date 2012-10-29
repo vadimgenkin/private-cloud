@@ -1,0 +1,340 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ab",
+				"absolutePath"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"cur",
+				"currDir"
+			],
+			[
+				"curre",
+				"currentDir"
+			],
+			[
+				"cure",
+				"currentDir"
+			],
+			[
+				"symb",
+				"symbol"
+			],
+			[
+				"cu",
+				"currentSymbol"
+			],
+			[
+				"last",
+				"last_name"
+			],
+			[
+				"con",
+				"contact"
+			],
+			[
+				"co",
+				"contact"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"conta",
+				"contacts"
+			],
+			[
+				"la",
+				"last_name"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "public/js/main.js",
+			"settings":
+			{
+				"buffer_size": 6339,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/js/private-cloud.js",
+			"settings":
+			{
+				"buffer_size": 4756,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 265.0,
+		"selected_items":
+		[
+			[
+				"pacck",
+				"Package Control: List Packages"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"bro",
+				"Preferences: Browse Packages"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/lxgreen/Projects/private-cloud/Application/public/css/main.less",
+		"/D/Projects/private-cloud/Application/public/js/main.js",
+		"/D/Projects/private-cloud/Application/public/css/main.less",
+		"/D/Dropbox/config files/.zshrc",
+		"/D/Projects/private-cloud/Application/public/css/main.css",
+		"/D/glacier_uploader/mt-aws-glacier/glacier.cfg",
+		"/D/glacier_uploader/mt-aws-glacier/journal.log",
+		"/D/Downloads/Calc/META-INF/MANIFEST.MF",
+		"/C/Program Files/Double Commander/doublecmd.xml",
+		"/C/Users/lxgreen/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Users/lxgreen/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/D/Program Files (x86)/Steam/steamapps/common/Cortex Command/Base.rte/Settings.ini",
+		"/D/Downloads/Calc/Main.class",
+		"/D/Projects/Regionerate/Documents/License.txt",
+		"/B/Music/The Worst Of Jefferson Airplane. (remastered 1997) .ape/Jefferson Airplane - The Worst of Jefferson Airplane.cue",
+		"/B/Music/The Worst Of Jefferson Airplane/Jefferson Airplane - The Worst of Jefferson Airplane.cue",
+		"/C/Users/lxgreen/Desktop/test.html",
+		"/C/Users/lxgreen/Desktop/new  2.txt",
+		"/D/glacier_uploader/mt-aws-glacier/README.md",
+		"/D/glacier_uploader/mt-aws-glacier/mtglacier.pl",
+		"/D/Dropbox/.config/sublime-text-2/Packages/jQuery/Snippets/<script> (jQuery google ajax api).tmSnippet",
+		"/D/Projects/device.js/contacts.html",
+		"/D/Downloads/Breaking Bad Season 5, Episode 1 Live Free or Die HDTV x264-FMQ/read.txt",
+		"/D/Downloads/antlr-dotnet-tool-3.4.1.9004/LICENSE.txt",
+		"/D/Downloads/python/Main.cs",
+		"/D/Downloads/python/Python.g",
+		"/D/Downloads/antlr-dotnet-tool-3.4.1.9004/examples-v3/Python/java/Java.g",
+		"/D/Downloads/antlr-dotnet-tool-3.4.1.9004/examples-v3/JavaScript/xmlLexer/XML.g",
+		"/D/Downloads/antlr-dotnet-tool-3.4.1.9004/examples-v3/JavaScript/python/PythonTokenSource.js",
+		"/C/Users/lxgreen/Desktop/GetTabKeyTargetNode.js",
+		"/D/Projects/device.js/js/script.js",
+		"/D/Projects/device.js/index.html",
+		"/D/Projects/cv.special/resources/special_res.js",
+		"/C/Users/lxgreen/Desktop/interview pt.txt"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"success",
+			"currentDir",
+			"li",
+			"nav",
+			"mypage5.h",
+			"mypage",
+			"mypage1",
+			"href",
+			"\\t",
+			"currentCount",
+			"h5",
+			"image",
+			"MVC",
+			"\\t",
+			"chunks"
+		],
+		"highlight": true,
+		"in_selection": true,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"    ",
+			"p",
+			"    "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "public/js/main.js",
+					"settings":
+					{
+						"buffer_size": 6339,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3408,
+								3408
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1425.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/js/private-cloud.js",
+					"settings":
+					{
+						"buffer_size": 4756,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2885,
+								2885
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1615.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.unsaved_changes":
+	{
+		"height": 130.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 182.0,
+	"status_bar_visible": true
+}

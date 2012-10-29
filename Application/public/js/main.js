@@ -1,4 +1,4 @@
-var home = "/home/lxgreen"; //TODO: home location -- to config file
+var home = "/home/lxgreen/Projects/private-cloud/Application/node_modules/blueimp-file-upload-node/public/files/"; //TODO: home location -- to config file
 var levelUp = "..";
 var currentDir = ".";
 
@@ -11,14 +11,15 @@ $(function() {
 
     // bind menu links
     $("a#nav-up").tooltip({placement: 'bottom', title: 'Level Up'}).click(function() {browse(levelUp);});
-
     $("a#nav-refresh").tooltip({placement: 'bottom', title: 'Refresh'}).click(function() {privateCloud.ls(currentDir, listFiles); });
-
     $("a#nav-home").tooltip({placement: 'bottom', title: 'Home'}).click(function() {browse(home); });
 
-    $("a#nav-upload").tooltip({placement: 'bottom', title: 'Upload File'});
+    $("a#upload-start").tooltip({placement: 'bottom', title: 'Start All Uploads'});
+    $("a#upload-cancel").tooltip({placement: 'bottom', title: 'Cancel All Uploads'});
+    $("a#upload-delete").tooltip({placement: 'bottom', title: 'Delete All Uploads'});
 
-    $("a#nav-new-folder").tooltip({placement: 'bottom', title: 'New Folder'}).click(function() {
+    $("a#fs-upload").tooltip({placement: 'bottom', title: 'Upload'});
+    $("a#fs-new-folder").tooltip({placement: 'bottom', title: 'New Folder'}).click(function() {
         // show new folder dialog
         utils.showDialog(dialogs.newFolderDialog(), function() {
 
@@ -44,18 +45,18 @@ $(function() {
         }, {shown : function(){$("input#newFolderName").focus(); } });
     });
 
-    $("a#nav-settings").tooltip({placement: 'bottom', title: 'Settings'})
+    $("a#misc-settings").tooltip({placement: 'bottom', title: 'Settings'})
     .click(function(){
         // show settings dialog
         utils.showDialog(dialogs.settingsDialog(), function() {}, {} );
     });
 
-    $("a#nav-help").tooltip({placement: 'bottom', title: 'Help'}).click(function(){
+    $("a#misc-help").tooltip({placement: 'bottom', title: 'Help'}).click(function(){
         // show help dialog
         utils.showDialog(dialogs.helpDialog(), function() {}, {});
     });
 
-    $("a#nav-contact").tooltip({placement: 'bottom', title: 'Contact Us'});
+    $("a#misc-contact").tooltip({placement: 'bottom', title: 'Contact Us'});
 
 });
 
@@ -83,9 +84,7 @@ function listFiles(files) {
             event.stopPropagation();
             deleteCarefully($(this).closest("li").data("name"), $(this).closest("li").data("type"));
         });
-
     }
-
     $("ul#files").fadeIn();
 }
 
@@ -105,6 +104,8 @@ function init(){
             utils.showNotification({message : "Connectivity problem detected."});
         });
 
+    initFileUpload();
+
     // Load and register external templates
     preCompileTemplates();
 
@@ -112,10 +113,49 @@ function init(){
     defineCustomTags();
 }
 
+function initFileUpload() {
+
+    //TODO: get options from config
+    $("#fileUploader").fileupload({
+
+       //upload service url
+       url : "//localhost:8888/",
+
+        //upload method
+        type : 'POST',
+
+        //1MiB chunks
+        maxChunkSize : 1024*1024,
+
+        //upload on add
+        autoUpload : false,
+
+        add : function(e, data) {
+
+            // Show all-upload level controls in menu bar
+            $("ul#uploadControls").css("visibility", "visible");
+
+            var that = $(this).data('fileupload'), options = that.options, files = data.files;
+
+            // Set context to listView upload items
+            data.context = $($.render.uploadListItem(files)).insertAfter("#nav-back");
+
+            // validate + submit (according to options)
+            if (options.autoUpload &&
+                utils.validateFiles(files) && data.autoUpload !== false) {
+                    data.submit();
+            }
+        },
+
+
+    });
+}
+
 // Loads and registers external templates
 function preCompileTemplates() {
     utils.registerTemplate('fileListItem');
     utils.registerTemplate('backNavListItem');
+    utils.registerTemplate('uploadListItem');
     utils.registerTemplate('modalDialog');
 }
 
@@ -148,8 +188,13 @@ function defineCustomTags() {
             if(types.indexOf("browse") !== -1) {
                 links.push({title : "Browse", iconClass : "icon-folder-open default-action"});
             }
+            if(types.indexOf("upload") !== -1) {
+                links.push({title : "Delete upload", iconClass : "upload icon-trash", customStyle : "visibility : visible;"});
+                links.push({title : "Cancel upload", iconClass : "upload icon-stop", customStyle : "visibility : visible;"});
+                links.push({title : "Start upload", iconClass : "upload icon-play", customStyle : "visibility : visible;"});
+            }
 
-            $.templates('hoverLinks', "<a  href='#' class='{{:iconClass}} hover-option' title='{{:title}}'/>");
+            $.templates('hoverLinks', "<a  href='#' class='{{:iconClass}} hover-option' title='{{:title}}' style='{{:customStyle}}'/>");
 
             return $.render.hoverLinks(links);
         }

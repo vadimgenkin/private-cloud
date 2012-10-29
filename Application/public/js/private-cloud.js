@@ -1,7 +1,13 @@
+"use strict";
 (function(ns, $, undefined) {
+
+    var
+    // current dir tracking
+   dirtyDir = true,
+
     // Basic ajax API call
     // settings = {requestMethod, url, data, success, error, fail}
-    var apiCall = function(settings) {
+    apiCall = function(settings) {
 
         // handle default request fail
         var defaultSettings = {
@@ -32,6 +38,12 @@
         });
     };
 
+    // Uploading files tracking
+    // Array of {dir : "path", files}
+    ns.uploads =  ns.uploads || [];
+
+    ns.currentDir = "";
+
     // List directory
     ns.ls = function(path, callback) {
         apiCall({
@@ -39,19 +51,24 @@
             url : "/ls",
             data : {path : path},
             success :  function(files) {
-                callback(files);
+
+                if(typeof callback === 'function') {
+                    callback(files);
+                }
             }
         });
     };
 
     // Delete file
-    ns.rm = function(path, success) {
+    ns.rm = function(path, callback) {
         apiCall({
             url: '/delete',
             requestMethod: 'DELETE',
             data: { path: path },
             success: function(result) {
-                success(result);
+                 if(typeof callback === 'function') {
+                    callback(result);
+                }
             }
         });
     };
@@ -62,11 +79,16 @@
             requestMethod : "post",
             url : "/mkdir",
             data : {path : path},
-            success :  function(files) {
-                success(files);
+            success :  function(result) {
+                 if(typeof success === 'function') {
+                   success(result);
+                }
+
             },
             error : function(e) {
-                error(e);
+                if(typeof error === 'function') {
+                    error(e);
+               }
             }
         });
     };
@@ -78,51 +100,59 @@
             url : "/chdir",
             data : {path : path},
             success :  function(result) {
-                callback(files);
+                dirtyDir = true;
+                if(typeof callback === 'function') {
+                    callback(files);
+                }
             }
         });
     };
 
     // Get current directory absolute path
     ns.pwd = function(success, error){
-        apiCall({
-            requestMethod : "get",
-            url : "/pwd",
-            success :  function(result) {
-                success(files);
-            },
-            error : function(e) {
-                error(e);
+        if(dirtyDir) {
+            apiCall({
+                requestMethod : "get",
+                url : "/pwd",
+                success :  function(result) {
+                    ns.currentDir = result;
+                    dirtyDir = false;
+                    if(typeof success === 'function') {
+                        success(ns.currentDir);
+                    }
+                },
+                error : function(e) {
+                    if(typeof error === 'function') {
+                        error(e);
+                    }
+                }
+            });
+        }
+        else {
+            if(typeof success === 'function') {
+                success(ns.currentDir);
             }
-        });
+        }
+
     };
 
     // Uploads file to server
-    ns.upload = function(path, success) {
-        apiCall({
-            requestMethod : "post",
-            url : "/upload",
-            data : {path : path},
-            success : function(result) {
-                success(result);
-            },
-            error : function(e) {
-                error(e);
-            }
-        });
-    };
-
-     // Downloads file from server
-    ns.download = function(path, success) {
-         apiCall({
-            requestMethod : "post",
-            url : "/download",
-            data : {path : path},
-            success : function(result) {
-                success(result);
-            }
-        });
-    };
-
+    // ns.upload = function(path, success) {
+    //     apiCall({
+    //         requestMethod : "post",
+    //         url : "/upload",
+    //         data : {path : path},
+    //         success : function(result) {
+    //              if(typeof success === 'function') {
+    //                 success(result);
+    //             }
+    //         },
+    //         error : function(e) {
+    //             if(typeof error === 'function') {
+    //                 error(e);
+    //             }
+    //         }
+    //     });
+    // };
 
 })(window.privateCloud = window.privateCloud || {}, jQuery);
