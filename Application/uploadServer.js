@@ -247,11 +247,6 @@ exports.start = function (port) {
             //fs.renameSync(file.path, options.uploadDir + '/' + fileInfo.name);
             fs.writeFileSync(options.uploadDir + '/' + fileInfo.name, fs.readFileSync(file.path));
             fs.unlinkSync(file.path);
-            // fileServer.moveFile(file.path, options.uploadDir + '/' + fileInfo.name, function(err){
-            //     if(err) console.log(err);
-            //     else{
-            //     }
-            // });
             if (options.imageTypes.test(fileInfo.name)) {
                 Object.keys(options.imageVersions).forEach(function (version) {
                     counter += 1;
