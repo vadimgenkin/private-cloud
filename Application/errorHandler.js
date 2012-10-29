@@ -10,7 +10,7 @@ var customErrMsg = {
 }
 
 
-exports.pathNotFoundError = function(p){
+exports.pathNotFoundError = function(p, callback){
 	if(!fs.existsSync(p)){
 		error = new Error(customErrMsg.pathNotFound + ': ' + p);
 		console.log(error);
@@ -19,6 +19,14 @@ exports.pathNotFoundError = function(p){
 	else{
 		return null;
 	}
+	// fs.exists(p, function(exists){
+	// 	if(exists) return null;
+	// 	else{
+	// 		error = new Error(customErrMsg.pathNotFound + ": " + p);
+	// 		console.log(error);
+	// 		return error;
+	// 	}
+	// });
 }
 
 
