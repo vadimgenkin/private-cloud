@@ -1,0 +1,6 @@
+[FlashGetPortable]
+CheckRegWrite=true
+AllowMultipleInstances=false
+JCD=Default
+DisableSplashScreen=false
+SplashScreenName=

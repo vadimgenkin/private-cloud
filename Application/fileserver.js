@@ -187,7 +187,21 @@ exports.ls = function(p, callback){
 	}
 }
 
+exports.moveFile = function(sourceFile, destinationFile, callback){
+	var is = fs.createReadStream(sourceFile);
+	var os = fs.createWriteStream(destinationFile);
 
+	util.pump(is,os,function(err){
+		if(err){
+			console.log(err);	
+			callback(err);		
+		} 
+		else{
+			fs.unlinkSync(sourceFile);
+			callback(null);
+		}
+	});	
+}
 
 //upload files
 exports.upload = function (req,res){
@@ -199,7 +213,7 @@ exports.upload = function (req,res){
 
 	util.pump(is,os,function(err){
 		if(err) console.log(err);
-		fs.unlinkSync(req.files.fileUpload.path);
+		fs.unlinkSync(sourceFile);
 		res.send('');
 	});
 }
