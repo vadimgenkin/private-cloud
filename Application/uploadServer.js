@@ -245,24 +245,27 @@ exports.start = function (port) {
                 return;
             }
             //fs.renameSync(file.path, options.uploadDir + '/' + fileInfo.name);
-            fileServer.moveFile(file.path, options.uploadDir + '/' + fileInfo.name, function(err){
-                if(err) console.log(err);
-                else{
-                    if (options.imageTypes.test(fileInfo.name)) {
-                        Object.keys(options.imageVersions).forEach(function (version) {
-                            counter += 1;
-                            var opts = options.imageVersions[version];
-                            imageMagick.resize({
-                                width: opts.width,
-                                height: opts.height,
-                                srcPath: options.uploadDir + '/' + fileInfo.name,
-                                dstPath: options.uploadDir + '/' + version + '/' +
-                                    fileInfo.name
-                            }, finish);
-                        });
-                    }
-                }
-            });
+            fs.writeFileSync(options.uploadDir + '/' + fileInfo.name, fs.readFileSync(file.path));
+            fs.unlinkSync(file.path);
+            // fileServer.moveFile(file.path, options.uploadDir + '/' + fileInfo.name, function(err){
+            //     if(err) console.log(err);
+            //     else{
+            //     }
+            // });
+            if (options.imageTypes.test(fileInfo.name)) {
+                Object.keys(options.imageVersions).forEach(function (version) {
+                    counter += 1;
+                    var opts = options.imageVersions[version];
+                    imageMagick.resize({
+                        width: opts.width,
+                        height: opts.height,
+                        srcPath: options.uploadDir + '/' + fileInfo.name,
+                        dstPath: options.uploadDir + '/' + version + '/' +
+                            fileInfo.name
+                    }, finish);
+                });
+            }
+
         }).on('aborted', function () {
             tmpFiles.forEach(function (file) {
                 fs.unlink(file);
