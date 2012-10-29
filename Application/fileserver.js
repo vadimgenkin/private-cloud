@@ -203,6 +203,11 @@ exports.moveFile = function(sourceFile, destinationFile, callback){
 	});	
 }
 
+exports.moveFileSync = function(sourceFile, destinationFile){
+    fs.writeFileSync(destinationFile, fs.readFileSync(sourceFile));
+    fs.unlinkSync(sourceFile);	
+}
+
 //upload files
 exports.upload = function (req,res){
 	var sourceFile = req.files.fileUpload.path;
