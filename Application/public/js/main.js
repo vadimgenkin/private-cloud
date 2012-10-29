@@ -1,4 +1,4 @@
-var home = "/home/lxgreen/Projects/private-cloud/Application/node_modules/blueimp-file-upload-node/public/files/"; //TODO: home location -- to config file
+var home = "d:\\downloads"; //TODO: home location -- to config file
 var levelUp = "..";
 var currentDir = ".";
 
@@ -118,17 +118,11 @@ function initFileUpload() {
     //TODO: get options from config
     $("#fileUploader").fileupload({
 
-       //upload service url
-       url : "//localhost:8888/",
-
-        //upload method
-        type : 'POST',
-
-        //1MiB chunks
-        maxChunkSize : 1024*1024,
+       // //1MiB chunks
+       //  maxChunkSize : 1024*1024,
 
         //upload on add
-        autoUpload : false,
+        autoUpload : true,
 
         add : function(e, data) {
 

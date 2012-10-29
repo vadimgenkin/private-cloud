@@ -40,7 +40,7 @@
                 </p>
                 <![endif]-->
 
-                <form action="http://localhost:8888/">
+                <form action="http://localhost:8888/" method="POST" id="fileUploader">
                     <nav id="nav-menu">
                                     <div class="navbar navbar-fixed-top">
                                         <div class="navbar-inner">
@@ -57,7 +57,7 @@
                                                     </ul>
                                                     <ul class="nav" id="filesystem">
                                                         <li><a href="#" id="fs-new-folder">+<i class="icon-folder-close"></i></a></li>
-                                                        <li><a href="#" id="fs-upload" class="fileinput-button"><i class="icon-upload" style="font-size: 1.3em;"></i><input type="file" id="fileUploader" name="files[]" multiple/></a></li>
+                                                        <li><a href="#" id="fs-upload" class="fileinput-button"><i class="icon-upload" style="font-size: 1.3em;"></i><input type="file" name="files[]" multiple/></a></li>
                                                     </ul>
                                                     <ul class="nav" id="uploadControls">
                                                         <li><a href="#" id="upload-start"><i class="icon-play"></i></a></li>
