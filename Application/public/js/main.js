@@ -119,7 +119,7 @@ function initFileUpload() {
     $("#fileUploader").fileupload({
 
        //1MiB chunks
-        maxChunkSize : 10*1024*1024,
+        //maxChunkSize : 10*1024*1024,
 
        // maxFileSize : 1000000000,
 
@@ -158,12 +158,26 @@ function initFileUpload() {
             $('#nav-back .upload-progress-bar')
                 .attr('aria-valuenow', progress)
                 .css('width', progress + '%');
+            $('#nav-back .span12').text(progress + '%');
         },
 
         // remove uploaded, relist files on complete
         done: function(e,data){
              if (data.context) {
-                data.context.remove();
+                var result = JSON.parse(data.result);
+                if(result && result.length > 0) {
+                    var error = result[0].error;
+                    var filename = result[0].name;
+                    if(error) {
+                        data.context.find(".upload-progress-bar").toggleClass("error");
+                        utils.showNotification({message :  "File '" + filename  + "' upload error (" + error + ")"});
+                    }
+                    else {
+                        data.context.remove();
+                         utils.showNotification({message :  "File '" + filename  + "' uploaded successfully", type : 'success'});
+                    }
+                }
+
 
                 if( $('.uploadListItem').length === 1) {
                     privateCloud.ls(currentDir, listFiles);
