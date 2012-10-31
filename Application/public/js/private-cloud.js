@@ -5,6 +5,8 @@
     // current dir tracking
    dirtyDir = true,
 
+   loadingIndicator = $("div#loading"),
+
     // Basic ajax API call
     // settings = {requestMethod, url, data, success, error, fail}
     apiCall = function(settings) {
@@ -21,6 +23,7 @@
 
         $.extend(defaultSettings, settings);
 
+        loadingIndicator.css('visibility', 'visible');
         $.ajax({
             type : defaultSettings.requestMethod,
             url : defaultSettings.url,
@@ -35,6 +38,9 @@
                 })
         .fail(function() {
             defaultSettings.fail();
+        })
+        .always(function(){
+            loadingIndicator.css('visibility', 'hidden');
         });
     };
 

@@ -130,6 +130,24 @@ ul#files
                     -ms-animation: progress-bar-stripes 2s linear infinite;
                     -o-animation: progress-bar-stripes 2s linear infinite;
                     animation: progress-bar-stripes 2s linear infinite;
+
+                    &.error
+                    {
+                        background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(238, 95, 91, 0.3)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(238, 95, 91, 0.3)), color-stop(0.75, rgba(238, 95, 91, 0.3)), color-stop(0.75, transparent), to(transparent));
+                        background-image: -webkit-linear-gradient(45deg, rgba(238, 95, 91, 0.3) 25%, transparent 25%, transparent 50%, rgba(238, 95, 91, 0.3) 50%, rgba(238, 95, 91, 0.3) 75%, transparent 75%, transparent);
+                        background-image: -moz-linear-gradient(45deg, rgba(238, 95, 91, 0.3) 25%, transparent 25%, transparent 50%, rgba(238, 95, 91, 0.3) 50%, rgba(238, 95, 91, 0.3) 75%, transparent 75%, transparent);
+                        background-image: -o-linear-gradient(45deg, rgba(238, 95, 91, 0.3) 25%, transparent 25%, transparent 50%, rgba(238, 95, 91, 0.3) 50%, rgba(238, 95, 91, 0.3) 75%, transparent 75%, transparent);
+                        background-image: linear-gradient(45deg, rgba(238, 95, 91, 0.3) 25%, transparent 25%, transparent 50%, rgba(238, 95, 91, 0.3) 50%, rgba(238, 95, 91, 0.3) 75%, transparent 75%, transparent);
+                    }
+
+                    &.warning /*rgba(251, 180, 80, 0.3)*/
+                    {
+                        background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(251, 180, 80, 0.3)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(251, 180, 80, 0.3)), color-stop(0.75, rgba(251, 180, 80, 0.3)), color-stop(0.75, transparent), to(transparent));
+                        background-image: -webkit-linear-gradient(45deg, rgba(251, 180, 80, 0.3) 25%, transparent 25%, transparent 50%, rgba(251, 180, 80, 0.3) 50%, rgba(251, 180, 80, 0.3) 75%, transparent 75%, transparent);
+                        background-image: -moz-linear-gradient(45deg, rgba(251, 180, 80, 0.3) 25%, transparent 25%, transparent 50%, rgba(251, 180, 80, 0.3) 50%, rgba(251, 180, 80, 0.3) 75%, transparent 75%, transparent);
+                        background-image: -o-linear-gradient(45deg, rgba(251, 180, 80, 0.3) 25%, transparent 25%, transparent 50%, rgba(251, 180, 80, 0.3) 50%, rgba(251, 180, 80, 0.3) 75%, transparent 75%, transparent);
+                        background-image: linear-gradient(45deg, rgba(251, 180, 80, 0.3) 25%, transparent 25%, transparent 50%, rgba(251, 180, 80, 0.3) 50%, rgba(251, 180, 80, 0.3) 75%, transparent 75%, transparent);
+                    }
                 }
 
                 div.upload-controls
@@ -191,4 +209,130 @@ nav#nav-menu
             }
         }
     }
+}
+
+.bubblingG
+{
+    text-align: center;
+    width:85px;
+    height:53px;
+    position: fixed;
+    right: 5%;
+    top: 95%;
+    visibility: hidden;
+
+    span
+    {
+        display: inline-block;
+        vertical-align: middle;
+        width: 11px;
+        height: 11px;
+        margin: 27px auto;
+        background: @gray;
+        -webkit-border-radius: 54px;
+        -moz-border-radius: 54px;
+        -ms-border-radius: 54px;
+        -o-border-radius: 54px;
+        border-radius: 54px;
+        -webkit-animation: bubblingG 0.8s infinite alternate;
+        -moz-animation: bubblingG 0.8s infinite alternate;
+        -ms-animation: bubblingG 0.8s infinite alternate;
+       -o-animation: bubblingG 0.8s infinite alternate;
+
+       &#bubblingG_1
+       {
+            -webkit-animation-delay: 0s;
+            -moz-animation-delay: 0s;
+            -ms-animation-delay: 0s;
+            -o-animation-delay: 0s;
+        }
+
+        &#bubblingG_2
+        {
+            -webkit-animation-delay: 0.24s;
+            -moz-animation-delay: 0.24s;
+            -ms-animation-delay: 0.24s;
+            -o-animation-delay: 0.24s;
+        }
+
+        &#bubblingG_3
+        {
+            -webkit-animation-delay: 0.48s;
+            -moz-animation-delay: 0.48s;
+            -ms-animation-delay: 0.48s;
+            -o-animation-delay: 0.48s;
+        }
+    }
+}
+
+
+
+
+
+@-webkit-keyframes bubblingG {
+0% {
+width: 11px;
+height: 11px;
+background-color:@grayDarker;
+-webkit-transform: translateY(0);
+}
+
+100% {
+width: 26px;
+height: 26px;
+background-color:@grayLight;
+-webkit-transform: translateY(-22px);
+}
+
+}
+
+@-moz-keyframes bubblingG {
+0% {
+width: 11px;
+height: 11px;
+background-color:@grayDarker;
+-moz-transform: translateY(0);
+}
+
+100% {
+width: 26px;
+height: 26px;
+background-color:@grayLight;
+-moz-transform: translateY(-22px);
+}
+
+}
+
+@-ms-keyframes bubblingG {
+0% {
+width: 11px;
+height: 11px;
+background-color:@grayDarker;
+-ms-transform: translateY(0);
+}
+
+100% {
+width: 26px;
+height: 26px;
+background-color:@grayLight;
+-ms-transform: translateY(-22px);
+}
+
+}
+
+@-o-keyframes bubblingG {
+0% {
+width: 11px;
+height: 11px;
+background-color:@grayDarker;
+-o-transform: translateY(0);
+}
+
+100% {
+width: 26px;
+height: 26px;
+background-color:@grayLight;
+-o-transform: translateY(-22px);
+}
+
 }
