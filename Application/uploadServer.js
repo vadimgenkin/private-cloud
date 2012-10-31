@@ -22,7 +22,7 @@ exports.start = function (port) {
         // Since Node 0.8, .existsSync() moved from path to fs:
         _existsSync = fs.existsSync || path.existsSync,
         formidable = require('formidable'),
-        nodeStatic = require('node-static'),
+       // nodeStatic = require('node-static'),
         imageMagick = require('imagemagick'),
         options = {
             tmpDir: __dirname + '/tmp',
@@ -46,7 +46,8 @@ exports.start = function (port) {
             },
             accessControl: {
                 allowOrigin: '*',
-                allowMethods: 'OPTIONS, HEAD, GET, POST, PUT, DELETE'
+                allowMethods: 'OPTIONS, HEAD, GET, POST, PUT, DELETE',
+                allowHeaders: 'Content-Type, Origin, X-Requested-With, Accept, Content-Range, Content-Disposition, Content-Description'
             },
             /* Uncomment and edit this section to provide the service via HTTPS:
             ssl: {
@@ -54,14 +55,14 @@ exports.start = function (port) {
                 cert: fs.readFileSync('/Applications/XAMPP/etc/ssl.crt/server.crt')
             },
             */
-            nodeStatic: {
-                cache: 3600 // seconds to cache served files
-            }
+            // nodeStatic: {
+            //     cache: 3600 // seconds to cache served files
+            // }
         },
         utf8encode = function (str) {
             return unescape(encodeURIComponent(str));
         },
-      //  fileServer = new nodeStatic.Server(options.publicDir, options.nodeStatic),
+        //fileServerStatic = new nodeStatic.Server(options.publicDir, options.nodeStatic),
         nameCountRegexp = /(?:(?: \(([\d]+)\))?(\.[^.]+))?$/,
         nameCountFunc = function (s, index, ext) {
             return ' (' + ((parseInt(index, 10) || 0) + 1) + ')' + (ext || '');
@@ -85,6 +86,10 @@ exports.start = function (port) {
             res.setHeader(
                 'Access-Control-Allow-Methods',
                 options.accessControl.allowMethods
+            );
+            res.setHeader(
+                'Access-Control-Allow-Headers',
+                options.accessControl.allowHeaders
             );
             var handleResult = function (result, redirect) {
                     if (redirect) {
@@ -124,7 +129,7 @@ exports.start = function (port) {
                         res.end();
                     }
                 } else {
-                    fileServer.serve(req, res);
+                  //  fileServerStatic.serve(req, res);
                 }
                 break;
             case 'POST':
@@ -139,7 +144,7 @@ exports.start = function (port) {
                 res.end();
             }
         };
-    // fileServer.respond = function (pathname, status, _headers, files, stat, req, res, finish) {
+    // fileServerStatic.respond = function (pathname, status, _headers, files, stat, req, res, finish) {
     //     if (!options.safeFileTypes.test(files[0])) {
     //         // Force a download dialog for unsafe file extensions:
     //         res.setHeader(
@@ -187,27 +192,27 @@ exports.start = function (port) {
             });
         }
     };
-    UploadHandler.prototype.get = function () {
-        options.uploadDir = process.cwd();
+    // UploadHandler.prototype.get = function () {
+    //     options.uploadDir = process.cwd();
 
-        var handler = this,
-            files = [];
-        fs.readdir(options.uploadDir, function (err, list) {
-            list.forEach(function (name) {
-                var stats = fs.statSync(options.uploadDir + '/' + name),
-                    fileInfo;
-                if (stats.isFile()) {
-                    fileInfo = new FileInfo({
-                        name: name,
-                        size: stats.size
-                    });
-                    fileInfo.initUrls(handler.req);
-                    files.push(fileInfo);
-                }
-            });
-            handler.callback(files);
-        });
-    };
+    //     var handler = this,
+    //         files = [];
+    //     fs.readdir(options.uploadDir, function (err, list) {
+    //         list.forEach(function (name) {
+    //             var stats = fs.statSync(options.uploadDir + '/' + name),
+    //                 fileInfo;
+    //             if (stats.isFile()) {
+    //                 fileInfo = new FileInfo({
+    //                     name: name,
+    //                     size: stats.size
+    //                 });
+    //                 fileInfo.initUrls(handler.req);
+    //                 files.push(fileInfo);
+    //             }
+    //         });
+    //         handler.callback(files);
+    //     });
+    // };
     UploadHandler.prototype.post = function () {
         options.uploadDir = process.cwd();
         var handler = this,
@@ -227,6 +232,7 @@ exports.start = function (port) {
                 }
             };
         form.uploadDir = options.tmpDir;
+        
         form.on('fileBegin', function (name, file) {
             tmpFiles.push(file.path);
             var fileInfo = new FileInfo(file, handler.req, true);
@@ -244,9 +250,9 @@ exports.start = function (port) {
                 fs.unlink(file.path);
                 return;
             }
-            //fs.renameSync(file.path, options.uploadDir + '/' + fileInfo.name);
-            fs.writeFileSync(options.uploadDir + '/' + fileInfo.name, fs.readFileSync(file.path));
-            fs.unlinkSync(file.path);
+
+            fileServer.moveFileSync(file.path, options.uploadDir + '/' + fileInfo.name);
+
             if (options.imageTypes.test(fileInfo.name)) {
                 Object.keys(options.imageVersions).forEach(function (version) {
                     counter += 1;

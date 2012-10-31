@@ -187,6 +187,7 @@ exports.ls = function(p, callback){
 	}
 }
 
+//moves file safely across different partitions
 exports.moveFile = function(sourceFile, destinationFile, callback){
 	var is = fs.createReadStream(sourceFile);
 	var os = fs.createWriteStream(destinationFile);
@@ -203,6 +204,7 @@ exports.moveFile = function(sourceFile, destinationFile, callback){
 	});	
 }
 
+//moves file safely across different partitions
 exports.moveFileSync = function(sourceFile, destinationFile){
     fs.writeFileSync(destinationFile, fs.readFileSync(sourceFile));
     fs.unlinkSync(sourceFile);	
@@ -213,13 +215,9 @@ exports.upload = function (req,res){
 	var sourceFile = req.files.fileUpload.path;
 	var destinationFile = req.body.path;
 
-	var is = fs.createReadStream(sourceFile);
-	var os = fs.createWriteStream(destinationFile);
-
-	util.pump(is,os,function(err){
+	moveFile(sourceFile, destinationFile, function(err){
 		if(err) console.log(err);
-		fs.unlinkSync(sourceFile);
-		res.send('');
+		res.send('');		
 	});
 }
 
