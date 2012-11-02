@@ -4,21 +4,21 @@
                 <div  class="span4">{{links "delete browse" /}}</div>
         {{else type == "inode/symlink"}}
                 <div class="span8"><i class="icon-external-link"></i><span>{{:name}}</span></div>
-                <div class="span4">{{links "delete share download" /}}</div>
+                <div class="span4">{{links "delete share download" href=name/}}</div>
         {{else type.indexOf("video/") != -1}}
                 <div class="span8"><i class="icon-film"></i><span>{{:name}}</span></div>
-                <div class="span4">{{links "delete share download stream" /}}</div>
+                <div class="span4">{{links "delete share download stream" href=name/}}</div>
         {{else type.indexOf("audio/") != -1}}
                 <div class="span8"><i class="icon-volume-up"></i><span>{{:name}}</span></div>
-                <div class="span4">{{links "delete share download stream" /}}</div>
+                <div class="span4">{{links "delete share download stream" href=name/}}</div>
         {{else type.indexOf("image/") != -1}}
                 <div class="span8"><i class="icon-picture"></i><span>{{:name}}</span></div>
-                <div class="span4">{{links "delete share download view" /}}</div>
+                <div class="span4">{{links "delete share download view" href=name /}}</div>
         {{else type.indexOf("text/") != -1}}
                 <div class="span8"><i class="icon-edit"></i><span>{{:name}}</span></div>
-                <div class="span4">{{links "delete share download edit" /}}</div>
+                <div class="span4">{{links "delete share download edit" href=name /}}</div>
         {{else}}
                 <div class="span8"><i class="icon-file"></i><span>{{:name}}</span></div>
-                <div class="span4">{{links "delete share download" /}}</div>
+                <div class="span4">{{links "delete share download" href=name/}}</div>
         {{/if}}
 </li>

@@ -84,12 +84,6 @@ function listFiles(files) {
             event.stopPropagation();
             deleteCarefully($(this).closest("li").data("name"), $(this).closest("li").data("type"));
         });
-       $("ul#files li a.icon-download").click(function(event) {
-            event.stopPropagation();
-            privateCloud.download($(this).closest("li").data("name"), function(){
-                privateCloud.ls(currentDir, listFiles);
-            });
-        });
     }
     $("ul#files").fadeIn();
 }
@@ -283,7 +277,7 @@ function defineCustomTags() {
                 links.push({title : "Share", iconClass : "icon-cloud"});
             }
             if(types.indexOf("download") !== -1) {
-                links.push({title : "Download", iconClass : "icon-download default-action"});
+                links.push({title : "Download", iconClass : "icon-download default-action", href : window.location.protocol + "//" + window.location.host+ "/" + this.props.href});
             }
             if(types.indexOf("stream") !== -1) {
                 links.push({title : "Stream", iconClass : "icon-play"});
@@ -303,7 +297,7 @@ function defineCustomTags() {
                 links.push({title : "Start upload", iconClass : "upload icon-play start", customStyle : "visibility : visible;"});
             }
 
-            $.templates('hoverLinks', "<a  href='#' class='{{:iconClass}} hover-option' title='{{:title}}' style='{{:customStyle}}'/>");
+            $.templates('hoverLinks', "<a href='{{: href || '#'}}' class='{{:iconClass}} hover-option' title='{{:title}}' style='{{:customStyle}}'/>");
 
             return $.render.hoverLinks(links);
         },
