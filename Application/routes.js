@@ -50,11 +50,6 @@ exports.uploadresumable = function(req,res){
 exports.chdir = function(req, res){
 	if(!req.body.path) return res.send('Path is not defined');
 
-	 app.configure(function(){
-	 	app.use(express.static(path.relative(serverPath, req.body.path)));
-	 });	
-
-
 	fileserver.chdir(req.body.path, function(err){
 		if(err) res.send({ error : err });
 		else res.send('');

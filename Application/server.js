@@ -17,15 +17,22 @@ app.configure(function(){
 	app.use(express.logger({stream: logFile}));
 });
 
-var serverPath = __dirname;
-
 process.chdir('/');
 
+var serverPath = __dirname;
 //app.post('/rmdir', fileserver.rmdir);
 
 app.get('/pwd', routes.pwd);
 
-app.post('/chdir', routes.chdir);
+app.post('/chdir', function(req,res){
+	if(!req.body.path) return res.send('Path is not defined');
+
+	 app.configure(function(){
+	 	app.use(express.static(path.relative(serverPath, req.body.path)));
+	 });	
+
+	routes.chdir(req,res);
+});
 
 //get memory (RAM)
 app.get('/memory', routes.memory);
@@ -44,12 +51,6 @@ app.post('/uploadresumable', fileserver.uploadresumable);
 
 //download a file
 app.post('/download', function(){
-	//console.log(process.cwd());
-	 app.configure(function(){
-//	 	app.use(express.static("../../../../"));
-	 	console.log(path.relative(serverPath, '/vadim'));
-	 	app.use(express.static(path.relative(serverPath, '/vadim')));
-	 });	
 });
 
 //delete file or folder
