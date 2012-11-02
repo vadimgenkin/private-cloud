@@ -103,6 +103,12 @@ if(!(window.console && console.log)) {
 
 (function(ns, $, undefined) {
 
+    var
+        newFolderDialog,
+        settingsDialog,
+        helpDialog
+    ;
+
     ns.deleteDialog = function(path, entryType) {
         var warning = "Are you sure you want to <b style='color : #bd362f;'>DELETE</b> '" + path + "' " + entryType + "?";
         return {
@@ -118,56 +124,54 @@ if(!(window.console && console.log)) {
     };
 
     ns.newFolderDialog = function() {
-        return {
-            data: {
-                content: '<input type="text" placeholder="Enter folder name" autofocus="autofocus" id="newFolderName"/>',
-                header: "Create New Folder",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
-                xButton: "×",
-                id: "newFolderDialog",
-                iconClass: "icon-folder-close"
-            }
-        };
+        if(!newFolderDialog) {
+            newFolderDialog = {
+                data: {
+                    content: '<input type="text" placeholder="Enter folder name" autofocus="autofocus" id="newFolderName"/>',
+                    header: "Create New Folder",
+                    buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
+                    xButton: "×",
+                    id: "newFolderDialog",
+                    iconClass: "icon-folder-close"
+                }
+            };
+        }
+
+        return newFolderDialog;
+
     };
 
     ns.settingsDialog = function() {
-        return {
-            data: {
-                content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
-                header: "Settings",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
-                xButton: "×",
-                id: "settingsDialog",
-                iconClass: "icon-cog"
-            }
-        };
+       if(!settingsDialog) {
+           settingsDialog = {
+                data: {
+                    content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+                    header: "Settings",
+                    buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnCreateNewFolder">Done</button>',
+                    xButton: "×",
+                    id: "settingsDialog",
+                    iconClass: "icon-cog"
+                }
+            };
+        }
+
+        return settingsDialog;
     };
 
     ns.helpDialog = function() {
-        return {
-            data: {
-                content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
-                header: "Help",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> ',
-                xButton: "×",
-                id: "helpDialog",
-                iconClass: "icon-question-sign"
-            }
-        };
+        if(!helpDialog) {
+           helpDialog = {
+                data: {
+                    content: '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>',
+                    header: "Help",
+                    buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> ',
+                    xButton: "×",
+                    id: "helpDialog",
+                    iconClass: "icon-question-sign"
+                }
+            };
+        }
     };
-
-    ns.uploadDialog = function() {
-        return {
-            data : {
-                content: "<form><input type='file'></form>",
-                header: "Upload File",
-                buttons: '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> <button class="btn btn-primary" id="btnUpload">Upload</button>',
-                xButton: "×",
-                id: "uploadDialog",
-                iconClass: "icon-upload"
-            }
-        };
-    }
 
 })(window.dialogs = window.dialogs || {}, jQuery);
 

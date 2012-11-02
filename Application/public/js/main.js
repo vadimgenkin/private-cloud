@@ -89,11 +89,40 @@ function listFiles(files) {
 }
 
 // changes dir and lists its content
-function browse(path) {
+function browse(path, shouldPreserveNavigationPath) {
     privateCloud.cd(path,
         // success
         function() {
+            // list content
             privateCloud.ls(currentDir, listFiles);
+
+            // get absolute path
+            privateCloud.pwd(function(){
+                // reset navPath on regular browse
+                if(!shouldPreserveNavigationPath) {
+                    privateCloud.navigationPath = privateCloud.currentDir;
+                }
+
+                // generate navigation data
+                var
+                dirs = [],
+                navigationPath = privateCloud.navigationPath,
+                paths = navigationPath.split(utils.dirDelimiter);
+                while(navigationPath) {
+                    dirs.unshift({dir : navigationPath});
+                    paths.pop();
+                    navigationPath = paths.join(utils.dirDelimiter);
+                }
+
+                // render breadcrumbs navigation bar
+               $("ul#breadcrumbs").html($.render.breadcrumbsNavigation({dirs: dirs, current : privateCloud.currentDir, delimiter :utils.dirDelimiter}));
+               $("ul#breadcrumbs li a").click(function(){
+                    var navDir = $(this).closest("li").data("dir");
+                    if(navDir) {
+                        browse(navDir, true);
+                    }
+               });
+            });
         }
     );
 }
@@ -104,6 +133,21 @@ function init(){
             utils.showNotification({message : "Connectivity problem detected."});
         });
 
+    $(document).keyup(function(event) {
+        var
+            leftArrowKey = 37,
+            upArrowKey = 38,
+            rightArrowKey = 39,
+            downArrowKey = 40
+        ;
+        if(event.keyCode === leftArrowKey) {
+            navigatePrev();
+        }
+        else if(event.keyCode === rightArrowKey) {
+            navigateNext();
+        }
+    });
+
     initFileUpload();
 
     // Load and register external templates
@@ -113,13 +157,31 @@ function init(){
     defineCustomTags();
 }
 
+function navigateNext() {
+    var nextNavLink = $("ul#breadcrumbs li.active").next();
+    if(nextNavLink) {
+        var nextDir = nextNavLink.data("dir");
+        if(nextDir)
+            browse(nextDir, true);
+    }
+}
+
+function navigatePrev() {
+     var prevNavLink = $("ul#breadcrumbs li.active").prev();
+    if(prevNavLink) {
+        var previousDir = prevNavLink.data("dir");
+        if(previousDir)
+            browse(previousDir, true);
+    }
+}
+
 function initFileUpload() {
 
     //TODO: get options from config
     $("#fileUploader").fileupload({
 
-       //1MiB chunks
-        //maxChunkSize : 10*1024*1024,
+       //10MiB chunks
+        maxChunkSize : 10*1024*1024,
 
        // maxFileSize : 1000000000,
 
@@ -197,6 +259,7 @@ function preCompileTemplates() {
     utils.registerTemplate('uploadListItem');
     utils.registerTemplate('modalDialog');
     utils.registerTemplate('uploadOverallListItem');
+    utils.registerTemplate('breadcrumbsNavigation');
 }
 
 // Defines custom tags for templating
@@ -237,6 +300,13 @@ function defineCustomTags() {
             $.templates('hoverLinks', "<a  href='#' class='{{:iconClass}} hover-option' title='{{:title}}' style='{{:customStyle}}'/>");
 
             return $.render.hoverLinks(links);
+        },
+
+        breadcrumbs : function(data){
+            var ret = "";
+            for(dir in data.dirs){
+                ret += this.renderContent(dir)
+            }
         }
     });
 }

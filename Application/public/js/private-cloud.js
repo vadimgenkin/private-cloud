@@ -44,11 +44,11 @@
         });
     };
 
-    // Uploading files tracking
-    // Array of {dir : "path", files}
-    ns.uploads =  ns.uploads || [];
-
+    // current dir tracking
     ns.currentDir = "";
+
+    // navigation path tracking
+    ns.navigationPath = "";
 
     // List directory
     ns.ls = function(path, callback) {
@@ -139,26 +139,5 @@
                 success(ns.currentDir);
             }
         }
-
     };
-
-    // Uploads file to server
-    // ns.upload = function(path, success) {
-    //     apiCall({
-    //         requestMethod : "post",
-    //         url : "/upload",
-    //         data : {path : path},
-    //         success : function(result) {
-    //              if(typeof success === 'function') {
-    //                 success(result);
-    //             }
-    //         },
-    //         error : function(e) {
-    //             if(typeof error === 'function') {
-    //                 error(e);
-    //             }
-    //         }
-    //     });
-    // };
-
 })(window.privateCloud = window.privateCloud || {}, jQuery);

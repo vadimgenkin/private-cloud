@@ -1,0 +1,7 @@
+   {{for dirs}}
+    <li {{if #parent.parent.data.current === dir}} class="active"{{/if}} data-dir="{{:dir}}">
+        <a href="#">
+            {{:dir.split(#parent.parent.data.delimiter).pop() || dir}}
+        </a>
+    </li>
+    {{for}}
