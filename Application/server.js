@@ -27,6 +27,7 @@ app.get('/pwd', routes.pwd);
 app.post('/chdir', function(req,res){
 	if(!req.body.path) return res.send('Path is not defined');
 
+	console.log(path.relative(serverPath, req.body.path));
 	 app.configure(function(){
 	 	app.use(express.static(path.relative(serverPath, req.body.path)));
 	 });	
