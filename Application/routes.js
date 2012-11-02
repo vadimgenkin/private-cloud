@@ -71,7 +71,7 @@ exports.diskspace = function(req,res){
 
 //download a file
 exports.download = function (req,res){
-	res.sendfile(req.body.path);
+	res.attachment(req.body.path);
 }
 
 //delete file or folder
