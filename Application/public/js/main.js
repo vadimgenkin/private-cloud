@@ -84,6 +84,12 @@ function listFiles(files) {
             event.stopPropagation();
             deleteCarefully($(this).closest("li").data("name"), $(this).closest("li").data("type"));
         });
+       $("ul#files li a.icon-download").click(function(event) {
+            event.stopPropagation();
+            privateCloud.download($(this).closest("li").data("name"), function(){
+                privateCloud.ls(currentDir, listFiles);
+            });
+        });
     }
     $("ul#files").fadeIn();
 }

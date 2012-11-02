@@ -114,6 +114,20 @@
         });
     };
 
+    ns.download  = function(path, callback) {
+        apiCall({
+            requestMethod : "post",
+            url : "/download",
+            data : {path : path},
+            success :  function(result) {
+
+                if(typeof callback === 'function') {
+                    callback(result);
+                }
+            }
+        });
+    };
+
     // Get current directory absolute path
     ns.pwd = function(success, error){
         if(dirtyDir) {
