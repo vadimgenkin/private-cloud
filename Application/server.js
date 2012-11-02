@@ -6,6 +6,8 @@ var routes = require("./routes");
 
 var uploadServer = require("./uploadServer");
 
+var path = require("path");
+
 var app = express();
 var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
 
@@ -14,6 +16,8 @@ app.configure(function(){
 	app.use(express.bodyParser());
 	app.use(express.logger({stream: logFile}));
 });
+
+var serverPath = __dirname;
 
 process.chdir('/');
 
@@ -39,7 +43,14 @@ app.post('/upload', fileserver.upload);
 app.post('/uploadresumable', fileserver.uploadresumable);
 
 //download a file
-app.post('/download', fileserver.download);
+app.post('/download', function(){
+	//console.log(process.cwd());
+	 app.configure(function(){
+//	 	app.use(express.static("../../../../"));
+	 	console.log(path.relative(serverPath, '/vadim'));
+	 	app.use(express.static(path.relative(serverPath, '/vadim')));
+	 });	
+});
 
 //delete file or folder
 app.del('/delete', routes.delete);

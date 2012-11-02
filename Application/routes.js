@@ -1,4 +1,10 @@
 var fileserver = require('./fileserver');
+var fs = require('fs');
+
+var path = require('path');
+
+var serverPath = __dirname;
+
 
 exports.stat = function (req,res){
 	if(!req.body.path) res.send('Path is not defined');
@@ -44,6 +50,11 @@ exports.uploadresumable = function(req,res){
 exports.chdir = function(req, res){
 	if(!req.body.path) return res.send('Path is not defined');
 
+	 app.configure(function(){
+	 	app.use(express.static(path.relative(serverPath, req.body.path)));
+	 });	
+
+
 	fileserver.chdir(req.body.path, function(err){
 		if(err) res.send({ error : err });
 		else res.send('');
@@ -71,7 +82,7 @@ exports.diskspace = function(req,res){
 
 //download a file
 exports.download = function (req,res){
-	res.attachment(req.body.path);
+
 }
 
 //delete file or folder
