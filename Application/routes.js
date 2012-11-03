@@ -1,11 +1,6 @@
 var fileserver = require('./fileserver');
 var fs = require('fs');
 
-var path = require('path');
-
-var serverPath = __dirname;
-
-
 exports.stat = function (req,res){
 	if(!req.body.path) res.send('Path is not defined');
 
@@ -73,11 +68,6 @@ exports.diskspace = function(req,res){
 			res.send({ error : err});
 		}
 	});
-}
-
-//download a file
-exports.download = function (req,res){
-
 }
 
 //delete file or folder

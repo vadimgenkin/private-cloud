@@ -3,10 +3,9 @@ var util = require("util");
 var fileserver = require('./fileserver');
 var fs = require('fs');
 var routes = require("./routes");
+var path = require("path");
 
 var uploadServer = require("./uploadServer");
-
-var path = require("path");
 
 var app = express();
 var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
@@ -19,21 +18,21 @@ app.configure(function(){
 
 process.chdir('/');
 
-var serverPath = __dirname;
-//app.post('/rmdir', fileserver.rmdir);
-
 app.get('/pwd', routes.pwd);
 
 app.post('/chdir', function(req,res){
-	if(!req.body.path) return res.send('Path is not defined');
-
-	console.log(path.relative(serverPath, req.body.path));
-	 app.configure(function(){
-	 	app.use(express.static(path.relative(serverPath, req.body.path)));
-	 });	
+	setStaticServerPath(req.body.path);
 
 	routes.chdir(req,res);
 });
+
+var setStaticServerPath = function(p){
+	if(!p) return res.send('Path: ' + p + ' is not defined');
+
+	 app.configure(function(){
+	 	app.use(express.static(path.relative(__dirname, p)));
+	 });		
+}
 
 //get memory (RAM)
 app.get('/memory', routes.memory);
