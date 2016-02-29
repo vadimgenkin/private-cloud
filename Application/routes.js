@@ -2,7 +2,7 @@ var fileserver = require('./fileserver');
 var fs = require('fs');
 
 var check_path = function (req, res) {
-	if(!req.body.path) {
+   if(!req.body.path) {
       res.status(400).send('Path is not defined');
       return false;
    } else {
@@ -11,28 +11,28 @@ var check_path = function (req, res) {
 }
 
 exports.stat = function (req,res){
-	if(!check_path) return;
+	if(!check_path(req, res)) return;
 
 	fileserver.stat(req.body.path, function(err,stats){
 		if(stats){
 			res.send(stats);
 		}
 		else{
-			res.send({error : err.message});
+			res.status(500).send({error : err.message});
 		}
 	});
 }
 
 //list directory
 exports.ls = function(req,res){
-	if(!check_path) return;
+ 	if(!check_path(req, res)) return;
 
 	fileserver.ls(req.body.path, function(err, nodes){
 		if(!err){
 			res.send(nodes);
 		}
 		else{
-			res.send({error : err.message});
+			res.status(500).send({error : err.message});
 		}
 	});
 }
@@ -52,10 +52,10 @@ exports.uploadresumable = function(req,res){
 }
 
 exports.chdir = function(req, res){
-	if(!check_path) return;
+	if(!check_path(req, res)) return;
 
 	fileserver.chdir(req.body.path, function(err){
-		if(err) res.send({ error : err });
+		if(err) res.status(500).send({ error : err });
 		else res.send('');
 	});
 }
@@ -75,7 +75,7 @@ exports.diskspace = function(req,res){
 			res.json(space);
 		}
 		else{
-			res.send({ error : err});
+			res.status(500).send({ error : err});
 		}
 	});
 }
@@ -86,16 +86,16 @@ exports.delete = function(req,res){
 
 	fileserver.delete(req.body.path, function(err, status){
 		if(!err) res.send(status);
-		else res.send({error : err.message});
+		else res.status(500).send({error : err.message});
 	});
 }
 
 //create new directory
 exports.createDir = function(req,res){
-	if(!check_path) return;
+	if(!check_path(req, res)) return;
 
 	fileserver.createDir(req.body.path, function(err){
-		if(err) res.send({ error : err });
+		if(err) res.status(500).send({ error : err });
 		else res.send('');
 	});
 }
