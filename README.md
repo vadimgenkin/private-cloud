@@ -13,4 +13,4 @@ ATM, the PiBox Server is targeted to run on Linux and Windows systems.
 ### The PiBox Client
 In addition to the Web user interface available through a Web Browser on any platform, there is hybrid Android app that extends the client abilities (e.g. auto-backup, photo/video backup, etc)
 ## Security
-The access to the remote file system is granted accordingly to the remote machine user permissions. Any access attempt is conditioned with remote system user authentication.
+The access to the remote file system is granted accordingly to the remote machine user permissions. Any access attempt requires the user authentication.
