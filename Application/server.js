@@ -4,6 +4,7 @@ var fileserver = require('./fileserver');
 var fs = require('fs');
 var routes = require("./routes");
 var path = require("path");
+var settings = require("./settings.json");
 
 var uploadServer = require("./uploadServer");
 
@@ -64,8 +65,8 @@ app.post('/mkdir', routes.createDir);
 //add http link to download
 app.post('/httpDownload', fileserver.httpDownload);
 
-app.listen(3001);
-console.log('Server listening on port 3001');
+app.listen(settings.listen_port);
+console.log('Server listening on port ' + settings.listen_port);
 
 uploadServer.start(8888);
 console.log('Upload Server listening on port 8888');
