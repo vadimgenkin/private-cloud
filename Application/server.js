@@ -11,7 +11,7 @@ var bodyParser = require("body-parser");
 var logger = require("morgan")
 
 var app = express();
-var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
+var logFile = fs.createWriteStream('./morgan.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({
