@@ -7,15 +7,20 @@ var path = require("path");
 var settings = require("./settings.json");
 
 var uploadServer = require("./uploadServer");
+var bodyParser = require("body-parser");
+var logger = require("morgan")
 
 var app = express();
 var logFile = fs.createWriteStream('./myLogFile.log', {flags: 'a'}); //use {flags: 'w'} to open in write mode
 
-app.configure(function(){
-	app.use(express.static(__dirname + "/public"));
-	app.use(express.bodyParser());
-	app.use(express.logger({stream: logFile}));
-});
+app.use(express.static(__dirname + "/public"));
+app.use(bodyParser.urlencoded({
+   extended: true
+}));
+app.use(bodyParser.json());
+app.use(logger("combined", {
+   stream: logFile,
+}));
 
 process.chdir('/');
 
@@ -55,7 +60,7 @@ app.post('/download', function(){
 });
 
 //delete file or folder
-app.del('/delete', routes.delete);
+app.delete('/delete', routes.delete);
 
 app.post('/stat', routes.stat);
 

@@ -21,13 +21,17 @@
   },
   "homepage": "https://github.com/vadimgenkin/private-cloud#readme",
   "dependencies": {
+    "body-parser": "1.15.0",
     "diskspace": "1.0.2",
+    "errorhandler": "1.4.3",
     "express": "4.13.4",
     "formidable": "1.0.17",
     "frisby": "0.8.5",
     "imagemagick": "0.1.3",
     "mime": "1.3.4",
     "mime-magic": "5.14.0",
+    "morgan": "1.7.0",
+    "serve-static": "1.10.2",
     "wrench": "1.5.8"
   }
 }
