@@ -5,18 +5,15 @@ var SANDBOX_PATH = __dirname + "/sandbox";
 var WRONG_PATH = "abhjsk/dskjdnsl/dsjdlksdj";
 var LS_URL = 'http://127.0.0.1:' + settings.listen_port + '/ls'; 
 
-var EXPECTED_RESPONSE = '[\
-       { "type": "dir", "name": "dir1"},\
-       { "type": "", "name": "/home/vadim/Downloads/private-cloud/Application/tests/sandbox/file0"}\
-      ]';
-
-
 frisby.create('ls happy path')
    .post(LS_URL, {
       path: SANDBOX_PATH
    })
    .expectStatus(200)
-   .expectBodyContains(EXPECTED_RESPONSE)
+   .expectJSONTypes('*', {
+      type: String,
+      name: String
+   })
    .after(function (error, response, body) {
          console.log('Here is the body of response: ' + body);      
    })
