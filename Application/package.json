@@ -1,0 +1,33 @@
+{
+  "name": "pibox",
+  "version": "0.5.0",
+  "description": "piBox",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vadimgenkin/private-cloud.git"
+  },
+  "author": "Vadim Genkin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vadimgenkin/private-cloud/issues"
+  },
+  "homepage": "https://github.com/vadimgenkin/private-cloud#readme",
+  "dependencies": {
+    "diskspace": "1.0.2",
+    "express": "4.13.4",
+    "formidable": "1.0.17",
+    "frisby": "0.8.5",
+    "imagemagick": "0.1.3",
+    "mime": "1.3.4",
+    "mime-magic": "5.14.0",
+    "wrench": "1.5.8"
+  }
+}
